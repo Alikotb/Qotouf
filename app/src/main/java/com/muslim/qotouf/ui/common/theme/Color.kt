@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.theme
+package com.muslim.qotouf.ui.common.theme
 
 import androidx.compose.ui.graphics.Color
 
