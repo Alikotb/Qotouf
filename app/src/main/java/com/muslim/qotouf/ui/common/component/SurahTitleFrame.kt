@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +27,7 @@ import com.muslim.qotouf.R
 @Composable
 fun SurahTitleFrame(
     surahTitle: String = "آلِ عِمْرَانَ",
-    fontSize: Int = 14,
+    fontSize: Int = 20,
     fontWeight: FontWeight = FontWeight.Bold,
     ) {
 
@@ -48,7 +50,8 @@ fun SurahTitleFrame(
             fontSize = fontSize.sp,
             fontWeight = fontWeight,
             color = Color.Black,
-            maxLines = 1
+            maxLines = 1,
+            fontFamily = FontFamily(Font(R.font.thules)),
         )
     }
 

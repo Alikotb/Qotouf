@@ -16,7 +16,9 @@ import androidx.navigation.compose.rememberNavController
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
 import com.muslim.qotouf.utils.extensions.configureSystemUI
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
 

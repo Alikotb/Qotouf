@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id ("kotlin-parcelize")
 }
@@ -61,15 +63,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-//    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //Scoped API
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
 
-    //dependency injection
-    implementation("com.google.dagger:hilt-android:2.51")
-    kapt("com.google.dagger:hilt-compiler:2.51")
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+
 
     //icons
     implementation ("androidx.compose.material:material-icons-extended:1.4.0")
