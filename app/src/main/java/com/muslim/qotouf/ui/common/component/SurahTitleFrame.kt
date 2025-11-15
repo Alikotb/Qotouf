@@ -39,7 +39,7 @@ fun SurahTitleFrame(
         Image(
             painter = painterResource(R.drawable.surah_framework),
             contentDescription = "Ayah Mark",
-            modifier = Modifier.height(48.dp).width(screenWidth *0.85f),
+            modifier = Modifier.height(48.dp).width(screenWidth *0.9f),
             contentScale = ContentScale.FillBounds
         )
 
