@@ -5,4 +5,7 @@ import kotlinx.serialization.Serializable
 sealed class ScreenRoute {
     @Serializable
     object HomeRoute : ScreenRoute()
+
+    @Serializable
+    object SearchRoute : ScreenRoute()
 }

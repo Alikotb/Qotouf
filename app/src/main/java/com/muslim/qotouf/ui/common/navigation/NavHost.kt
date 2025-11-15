@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.muslim.qotouf.ui.screens.SearchScreen
 import com.muslim.qotouf.ui.screens.home.view.HomeScreen
 
 
@@ -20,9 +21,19 @@ fun AppNavHost(
 
         composable<ScreenRoute.HomeRoute> {
             HomeScreen(
+                innerPadding = innerPadding,
+                onSearchClick = {
+                    navController.navigate(ScreenRoute.SearchRoute)
+                }
+            )
+        }
+
+        composable<ScreenRoute.SearchRoute> {
+            SearchScreen(
                 innerPadding = innerPadding
             )
         }
+
 
     }
 
