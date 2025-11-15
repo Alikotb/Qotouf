@@ -11,3 +11,9 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val AppParBackgroundColor = Color(0xFF009788)
+
+val PageBackgroundLight = Color(0xffe0f2f2)
+val PageBackgroundDark = Color.Black
+
+val AllahNameBackgroundLight = Color(0xff8a4625)
+val AllahNameBackgroundDark = Color(0xffd37b22)

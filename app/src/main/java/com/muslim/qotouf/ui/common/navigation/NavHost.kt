@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.muslim.qotouf.ui.screens.SearchScreen
 import com.muslim.qotouf.ui.screens.home.view.HomeScreen
+import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.screens
+package com.muslim.qotouf.ui.screens.search.view
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
