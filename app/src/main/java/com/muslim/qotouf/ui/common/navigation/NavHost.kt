@@ -6,7 +6,9 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +17,8 @@ import com.muslim.qotouf.ui.screens.home.view.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 import com.muslim.qotouf.ui.screens.search.view.component.SearchThirdAppBarIcon
 import com.muslim.qotouf.ui.screens.thumera.view.ThumeraScreen
+import com.muslim.qotouf.ui.screens.thumera.view_model.ScreenshotController
+import com.muslim.qotouf.ui.screens.thumera.view_model.ThumeraViewModel
 
 
 @Composable
@@ -62,21 +66,33 @@ fun AppNavHost(
         }
 
         composable<ScreenRoute.ThumeraRoute> {
+            val viewModel: ThumeraViewModel = hiltViewModel()
             firstIcon.value = Icons.Default.Share
-            ThirdComposable.value = {SearchThirdAppBarIcon()}
+            val screenshotController = remember { ScreenshotController() }
+
+
             val ayah = Verse(
                 text = it.arguments?.getString("ayah") ?: "",
                 chapter = it.arguments?.getInt("chapter") ?: 0,
                 verse = it.arguments?.getInt("verse") ?: 0
             )
+            ThirdComposable.value = {
+                SearchThirdAppBarIcon {
+                    screenshotController.capture { bitmap ->
+                        viewModel.saveBitmapToGallery(bitmap,ayah.chapter,ayah.verse)
+                    }
+                }
+            }
             ThumeraScreen(
                 ayah = ayah,
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
+                screenshotController = screenshotController
             )
         }
 
-
     }
 
+
 }
+
