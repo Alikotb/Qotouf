@@ -24,11 +24,10 @@ fun ThumeraScreen(
     modifier: Modifier = Modifier,
     ayah: Verse,
     innerPadding: PaddingValues,
-    isDarkTheme: MutableState<Boolean>
+    isDarkTheme: MutableState<Boolean>,
 ) {
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp.dp
-    val screenWidth = config.screenWidthDp.dp
     LazyColumn(
         modifier = modifier.fillMaxSize().padding(innerPadding)
     ) {

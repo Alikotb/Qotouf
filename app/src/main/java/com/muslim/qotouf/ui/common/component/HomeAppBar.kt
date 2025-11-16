@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +20,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,7 +28,11 @@ import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 
 @Composable
 fun HomeAppBar(
-    onSettingClick: () -> Unit = {},
+    firstIcon: ImageVector,
+    secondIcon: ImageVector,
+    onFirstIconClick: () -> Unit = {},
+    onSecondIconClick: () -> Unit = { isDarkTheme.value = !isDarkTheme.value },
+    ThirdComposableState: MutableState<(@Composable () -> Unit)?>? = null,
     isDarkTheme: MutableState<Boolean>
 ) {
     Row(
@@ -57,13 +58,12 @@ fun HomeAppBar(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        isDarkTheme.value = !isDarkTheme.value
-//                        onModeClick()
+                        onSecondIconClick()
                     }
                     .padding(0.dp)
             ) {
                 Icon(
-                    imageVector = if(isDarkTheme.value) Icons.Default.DarkMode else Icons.Default.LightMode,
+                    imageVector = secondIcon,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     tint = Color(0xfffdfffe)
@@ -73,17 +73,18 @@ fun HomeAppBar(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        onSettingClick()
+                        onFirstIconClick()
                     }
                     .padding(0.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Settings,
+                    imageVector = firstIcon,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     tint = Color(0xfffdfffe)
                 )
             }
+            ThirdComposableState?.value?.let { it() }
         }
 
 
