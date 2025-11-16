@@ -2,7 +2,6 @@ package com.muslim.qotouf.ui.screens.home.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,7 +23,6 @@ import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
 import com.muslim.qotouf.ui.common.component.LoadingSection
 import com.muslim.qotouf.ui.common.component.SurahTitleFrame
 import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
-import com.muslim.qotouf.ui.screens.home.view.component.HomeAppBar
 import com.muslim.qotouf.ui.screens.home.view.component.HomeCard
 import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
 
@@ -31,7 +30,8 @@ import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
 fun HomeScreen(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    isDarkTheme: MutableState<Boolean>
 ) {
 
     val ayahList by viewModel.curentDayAyah.collectAsState()
@@ -39,54 +39,50 @@ fun HomeScreen(
     val isLoading by viewModel.loading.collectAsState()
 
     val colors = MaterialTheme.colorScheme
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.surfaceContainer)
             .padding(innerPadding),
     ) {
-
-        HomeAppBar()
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            if (!isLoading) {
-                item {
-                    Spacer(Modifier.height(16.dp))
-                    SurahTitleFrame(surahTitle = surahName)
-                }
-                item {
-                    Spacer(Modifier.height(16.dp))
-                    InTheNameOfAllah()
-                    Spacer(Modifier.height(12.dp))
-                }
-                item {
-                    CombinedAyatText(ayahList)
-                }
-
-
-            }else{
-                item {
-                    LoadingSection()
-                    Spacer(Modifier.height(32.dp))
-
-                }
+        if (!isLoading) {
+            item {
+                Spacer(Modifier.height(16.dp))
+                SurahTitleFrame(surahTitle = surahName)
             }
             item {
+                Spacer(Modifier.height(16.dp))
+                InTheNameOfAllah()
+                Spacer(Modifier.height(12.dp))
+            }
+            item {
+                CombinedAyatText(ayahList,isDarkTheme)
+            }
+
+
+        } else {
+            item {
+                LoadingSection()
                 Spacer(Modifier.height(32.dp))
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    HomeCard(
-                        onclick = {
-                            viewModel.getCurentDayaQatf()
-                        }
-                    )
-                    HomeCard(cardTitle = "إبحث عن ثمرة", onclick = onSearchClick)
-                }
+
+            }
+        }
+        item {
+            Spacer(Modifier.height(32.dp))
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HomeCard(
+                    onclick = {
+                        viewModel.getCurentDayaQatf()
+                    }
+                )
+                HomeCard(cardTitle = "إبحث عن ثمرة", onclick = onSearchClick)
             }
         }
     }
-
-
 }
+
+

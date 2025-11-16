@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -24,7 +25,7 @@ import com.muslim.qotouf.ui.common.component.AyahMarkComponent
 
 
 @Composable
-fun CombinedAyatText(ayahList: List<Verse>) {
+fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: MutableState<Boolean>) {
 
     val colors = MaterialTheme.colorScheme
     val inlineContentMap = mutableMapOf<String, InlineTextContent>()
@@ -48,6 +49,7 @@ fun CombinedAyatText(ayahList: List<Verse>) {
                 )
             ) {
                 AyahMarkComponent(
+                    isDarkTheme = isDarkTheme,
                     ayahNumber = verse.verse,
                     size = 22,
                     fontSize = 10

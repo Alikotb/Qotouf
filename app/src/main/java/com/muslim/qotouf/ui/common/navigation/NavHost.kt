@@ -2,6 +2,7 @@ package com.muslim.qotouf.ui.common.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,10 +10,13 @@ import com.muslim.qotouf.ui.screens.home.view.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 
 
+
+
 @Composable
 fun AppNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues,
+    isDarkTheme: MutableState<Boolean>,
 ) {
     NavHost(
         navController = navController,
@@ -22,16 +26,18 @@ fun AppNavHost(
         composable<ScreenRoute.HomeRoute> {
             HomeScreen(
                 innerPadding = innerPadding,
+                isDarkTheme = isDarkTheme,
                 onSearchClick = {
                     navController.navigate(ScreenRoute.SearchRoute)
-                }
+                },
             )
         }
 
         composable<ScreenRoute.SearchRoute> {
             SearchScreen(
-                innerPadding = innerPadding
-            )
+                innerPadding = innerPadding,
+                isDarkTheme = isDarkTheme,
+                )
         }
 
 

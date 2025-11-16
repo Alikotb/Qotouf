@@ -46,7 +46,7 @@ fun HomeCard(onclick: () -> Unit = {},cardTitle: String = "قطف جديد") {
             .height(cardHeight)
             .width(cardWidth)
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp)) // clip everything
+            .clip(RoundedCornerShape(12.dp))
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
