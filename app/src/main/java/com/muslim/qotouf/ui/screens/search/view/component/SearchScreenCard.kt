@@ -27,8 +27,8 @@ import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 @Composable
 fun SearchScreenCard(
     ayah: Verse,
-    onAyahClick: () -> Unit = {},
-    isDarkTheme: MutableState<Boolean>
+    isDarkTheme: MutableState<Boolean>,
+    onClick: (String, Int, Int) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
     Box(
@@ -41,7 +41,7 @@ fun SearchScreenCard(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                onAyahClick()
+                onClick(ayah.text, ayah.chapter, ayah.verse)
             }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {

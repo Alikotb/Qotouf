@@ -8,4 +8,7 @@ sealed class ScreenRoute {
 
     @Serializable
     object SearchRoute : ScreenRoute()
+
+    @Serializable
+    data class ThumeraRoute(val ayah: String, val chapter: Int, val verse: Int) : ScreenRoute()
 }

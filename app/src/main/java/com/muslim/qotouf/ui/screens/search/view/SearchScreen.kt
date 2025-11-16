@@ -28,7 +28,8 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
     viewModel: SearchViewModel = hiltViewModel(),
-    isDarkTheme: MutableState<Boolean>
+    isDarkTheme: MutableState<Boolean>,
+    onAyahClick: (String, Int, Int) -> Unit,
 ) {
 
     val list by viewModel.versesList.collectAsStateWithLifecycle()
@@ -53,7 +54,9 @@ fun SearchScreen(
                     items = list,
                     key = { it.text }
                 ) { ayah ->
-                    SearchScreenCard(ayah = ayah,isDarkTheme = isDarkTheme )
+                    SearchScreenCard(ayah = ayah,isDarkTheme = isDarkTheme ){a,b,c->
+                        onAyahClick(a, b, c)
+                    }
                     Spacer(Modifier.height(12.dp))
                 }
             }
