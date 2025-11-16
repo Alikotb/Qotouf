@@ -50,8 +50,9 @@ fun AppNavHost(
                 verse = it.arguments?.getInt("verse")?:0
             )
             ThumeraScreen(
-                innerPadding = innerPadding,
+                isDarkTheme = isDarkTheme,
                 ayah = ayah,
+                innerPadding = innerPadding
             )
         }
 
