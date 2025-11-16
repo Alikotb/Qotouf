@@ -30,10 +30,11 @@ import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 fun HomeAppBar(
     firstIcon: ImageVector,
     secondIcon: ImageVector,
-    onFirstIconClick: () -> Unit = {},
+   // onFirstIconClick: () -> Unit = {},
     onSecondIconClick: () -> Unit = { isDarkTheme.value = !isDarkTheme.value },
     ThirdComposableState: MutableState<(@Composable () -> Unit)?>? = null,
-    isDarkTheme: MutableState<Boolean>
+    isDarkTheme: MutableState<Boolean>,
+    onFirstIconClick: MutableState<() -> Unit>
 ) {
     Row(
         modifier = Modifier
@@ -73,7 +74,7 @@ fun HomeAppBar(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        onFirstIconClick()
+                        onFirstIconClick.value()
                     }
                     .padding(0.dp)
             ) {

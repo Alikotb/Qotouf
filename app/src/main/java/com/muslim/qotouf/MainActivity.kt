@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
             val secondAppBarIcon = remember { mutableStateOf(if (isDarkTheme.value) Icons.Default.DarkMode else Icons.Default.LightMode) }
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
-
+            val firstLambda = remember { mutableStateOf<()->Unit>({}) }
             navController = rememberNavController()
             configureSystemUI(isDarkTheme.value)
 
@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             HomeAppBar(
+                                onFirstIconClick = firstLambda,
                                 isDarkTheme = isDarkTheme,
                                 firstIcon = firstAppBarIcon.value,
                                 secondIcon = secondAppBarIcon.value,
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { innerPadding ->
                         AppNavHost(
+                            onFirstIconClick = firstLambda,
                             ThirdComposable = thirdAppBarComposable,
                             firstIcon = firstAppBarIcon,
                             secondIcon = secondAppBarIcon,

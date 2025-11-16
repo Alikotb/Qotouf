@@ -29,6 +29,7 @@ fun AppNavHost(
     isDarkTheme: MutableState<Boolean>,
     secondIcon: MutableState<ImageVector>,
     firstIcon: MutableState<ImageVector>,
+    onFirstIconClick: MutableState<() -> Unit>,
 ) {
     NavHost(
         navController = navController,
@@ -38,6 +39,7 @@ fun AppNavHost(
         composable<ScreenRoute.HomeRoute> {
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
+            onFirstIconClick.value ={}
             HomeScreen(
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
@@ -50,6 +52,8 @@ fun AppNavHost(
         composable<ScreenRoute.SearchRoute> {
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
+            onFirstIconClick.value ={}
+
             SearchScreen(
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
@@ -70,16 +74,22 @@ fun AppNavHost(
             firstIcon.value = Icons.Default.Share
             val screenshotController = remember { ScreenshotController() }
 
-
             val ayah = Verse(
                 text = it.arguments?.getString("ayah") ?: "",
                 chapter = it.arguments?.getInt("chapter") ?: 0,
                 verse = it.arguments?.getInt("verse") ?: 0
             )
+
+            onFirstIconClick.value = {
+                screenshotController.capture { bitmap ->
+                    viewModel.shareBitmapDirectly(bitmap)
+                }
+            }
+
             ThirdComposable.value = {
                 SearchThirdAppBarIcon {
                     screenshotController.capture { bitmap ->
-                        viewModel.saveBitmapToGallery(bitmap,ayah.chapter,ayah.verse)
+                        viewModel.saveBitmapToGallery(bitmap, ayah.chapter, ayah.verse)
                     }
                 }
             }
