@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
@@ -34,6 +36,7 @@ import com.muslim.qotouf.ui.common.helper.rememberScreenshotAnimation
 import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 import com.muslim.qotouf.ui.screens.thumera.view.component.ThumeraBottomBar
 import com.muslim.qotouf.ui.screens.thumera.view_model.ScreenshotController
+import com.muslim.qotouf.ui.screens.thumera.view_model.ThumeraViewModel
 import kotlinx.coroutines.delay
 
 
@@ -43,6 +46,7 @@ fun ThumeraScreen(
     modifier: Modifier = Modifier,
     ayah: Verse,
     innerPadding: PaddingValues,
+    viewModel: ThumeraViewModel = hiltViewModel(),
     isDarkTheme: MutableState<Boolean>,
     screenshotController: ScreenshotController
 ) {
@@ -52,6 +56,16 @@ fun ThumeraScreen(
 
     val (scale, triggerScreenshot) = rememberScreenshotAnimation()
     var flashVisible by remember { mutableStateOf(false) }
+
+    val ayahList by viewModel.versesList.collectAsStateWithLifecycle()
+    val isPreviousEnabled by viewModel.isPreviousEnabledState.collectAsStateWithLifecycle()
+    val isNextEnabled by viewModel.isNextEnabledState.collectAsStateWithLifecycle()
+
+
+
+    LaunchedEffect(ayah) {
+        viewModel.initAyah(ayah)
+    }
 
     Box(
         modifier = Modifier
@@ -65,6 +79,7 @@ fun ThumeraScreen(
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
+
                 .background(colors.surfaceContainer)
                 .padding(innerPadding)
         ) {
@@ -72,26 +87,38 @@ fun ThumeraScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .captureComposable(screenshotController) {
-                            triggerScreenshot()
+                        .captureComposable(screenshotController){
                             flashVisible = true
+                            triggerScreenshot()
                         }
+
                 ) {
-                    Spacer(Modifier.height(screenHeight * 0.05f))
+                    Spacer(Modifier.height(screenHeight * 0.02f))
                     SurahTitleFrame(surahTitle = QuranSurah.getSurahName(ayah.chapter))
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(12.dp))
                     InTheNameOfAllah()
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(12.dp))
                     CombinedAyatText(
-                        ayahList = listOf(ayah),
+                        ayahList = ayahList,
                         isDarkTheme = isDarkTheme
                     )
                     Spacer(Modifier.height(screenHeight * 0.05f))
                 }
             }
         }
-        ThumeraBottomBar(modifier = Modifier.align(Alignment.BottomCenter))
-
+            ThumeraBottomBar(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onBackClick = {
+                    val currentAyah = ayahList.firstOrNull() ?: ayah
+                    viewModel.onPreviousAyah(currentAyah)
+                },
+                onNextClick = {
+                    val currentAyah = ayahList.lastOrNull() ?: ayah
+                    viewModel.onNextAyah(currentAyah)
+                },
+                isBackEnabled = isPreviousEnabled,
+                isNextEnabled = isNextEnabled
+            )
         if (flashVisible) {
             Box(
                 modifier = Modifier

@@ -88,7 +88,7 @@ class HomeViewModel @Inject constructor(
         }
         val nextAyah = verses[nextIndex]
         val isNewSurah = nextAyah.chapter != surahNumber
-        return if (isNewSurah && nextAyah.chapter != 9) {
+        return if (isNewSurah ) {
             "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\n${nextAyah.text}"
         } else {
             nextAyah.text

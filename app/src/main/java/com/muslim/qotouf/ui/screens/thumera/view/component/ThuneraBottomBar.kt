@@ -15,8 +15,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,10 +28,10 @@ import com.muslim.qotouf.R
 @Composable
 fun ThumeraBottomBar(
     modifier: Modifier = Modifier,
-    onBackClick:()->Unit={},
-    onNextClick:()->Unit={},
-    isBackEnabled: MutableState<Boolean> = mutableStateOf(true),
-    isNextEnabled: MutableState<Boolean> = mutableStateOf(true)
+    onBackClick: () -> Unit ={},
+    onNextClick: () -> Unit ={},
+    isBackEnabled: Boolean,
+    isNextEnabled: Boolean
 ) {
     val colors = MaterialTheme.colorScheme
     val config = LocalConfiguration.current
@@ -55,7 +53,7 @@ fun ThumeraBottomBar(
             icon = Icons.AutoMirrored.Filled.ArrowBackIos,
             text = "التالى",
             isRight = true,
-            enabled = isNextEnabled.value,
+            enabled = isNextEnabled,
             onClick = onNextClick
         )
         Icon(
@@ -68,7 +66,7 @@ fun ThumeraBottomBar(
             icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
             text = "السابق",
             isRight = false,
-            enabled = isBackEnabled.value,
+            enabled = isBackEnabled,
             onClick = onBackClick
         )
 
