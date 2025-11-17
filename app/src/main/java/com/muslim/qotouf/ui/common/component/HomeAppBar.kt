@@ -30,7 +30,6 @@ import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 fun HomeAppBar(
     firstIcon: ImageVector,
     secondIcon: ImageVector,
-   // onFirstIconClick: () -> Unit = {},
     onSecondIconClick: () -> Unit = { isDarkTheme.value = !isDarkTheme.value },
     ThirdComposableState: MutableState<(@Composable () -> Unit)?>? = null,
     isDarkTheme: MutableState<Boolean>,

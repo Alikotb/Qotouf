@@ -17,13 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muslim.qotouf.R
 
 @SuppressLint("ConfigurationScreenWidthHeight")
-@Preview(showBackground = true)
 @Composable
 fun SurahTitleFrame(
     surahTitle: String = "آلِ عِمْرَانَ",
