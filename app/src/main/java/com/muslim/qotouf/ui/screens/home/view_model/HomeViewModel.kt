@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
         val ayahList = mutableListOf(allVerses[index])
         var combinedText = allVerses[index].text
 
-        while (combinedText.length < 200) {
+        while (combinedText.length < 300) {
             val nextText = getNextAyah(index, allVerses[index].chapter)
             index = (index + 1) % allVerses.size
             val nextAyah = allVerses[index]
@@ -91,19 +91,3 @@ class HomeViewModel @Inject constructor(
     }
 
 }
-/*   fun getCurentDayQatfTafseer(selectedAyah: List<Verse>) {
-        val tafsier = MyApp.allTafsier
-        viewModelScope.launch {
-            _loading.value = true
-            withContext(Dispatchers.IO) {
-                val currentAyahList = selectedAyah
-                val tafsierList = mutableListOf<TafsierDtoItem>()
-                for (ayah in currentAyahList) {
-                    val tafseerForAyah = tafsier.filter { it.sura == ayah.chapter && it.verse == ayah.verse }
-                    tafsierList.addAll(tafseerForAyah)
-                }
-                _curentDayTafsier.value = tafsierList
-            }
-            _loading.value = false
-        }
-    }*/

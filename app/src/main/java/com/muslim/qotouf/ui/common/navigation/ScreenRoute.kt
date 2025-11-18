@@ -13,4 +13,11 @@ sealed class ScreenRoute {
 
     @Serializable
     data class ThumeraRoute(val ayah: String, val chapter: Int, val verse: Int) : ScreenRoute()
+
+    @Serializable
+    object HadithRoute : ScreenRoute()
+
+
+    @Serializable
+    object DoaaRoute : ScreenRoute()
 }

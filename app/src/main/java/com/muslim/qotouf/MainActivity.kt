@@ -14,6 +14,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,10 +23,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
+import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
-import com.muslim.qotouf.utils.extensions.configureSystemUI
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,11 +47,17 @@ class MainActivity : ComponentActivity() {
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
             val firstLambda = remember { mutableStateOf({}) }
             val appBarTitle = remember { mutableStateOf("قـطــــوف") }
-
             navController = rememberNavController()
             snackBarHost = remember { SnackbarHostState() }
-            configureSystemUI(isDarkTheme.value)
 
+
+            val systemUiController = rememberSystemUiController()
+
+            SideEffect {
+                systemUiController.setStatusBarColor(
+                    color = AppParBackgroundColor,
+                )
+            }
             CompositionLocalProvider(
                 LocalLayoutDirection provides LayoutDirection.Rtl
             ) {

@@ -24,7 +24,7 @@ fun ShowTafsierComponent(
     ) {
     val colors = MaterialTheme.colorScheme
     Box(
-        modifier = Modifier
+        modifier =  Modifier
             .fillMaxWidth()
             .padding(end = 16.dp)
     ) {

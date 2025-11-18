@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -34,9 +33,10 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
     onSearchClick: () -> Unit,
+    onHadithClick: () -> Unit,
+    onDoaaClick: () -> Unit,
     onDayTafsierClick: (String,String)-> Unit,
     isDarkTheme: MutableState<Boolean>,
-    snackBarHost: SnackbarHostState
 ) {
 
     val ayahList by viewModel.curentDayAyah.collectAsState()
@@ -44,6 +44,7 @@ fun HomeScreen(
     val isLoading by viewModel.loading.collectAsState()
 
     val colors = MaterialTheme.colorScheme
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -96,6 +97,24 @@ fun HomeScreen(
                 HomeCard(cardTitle = "إبحث عن ثمرة", onclick = onSearchClick)
             }
         }
+        item {
+            Spacer(Modifier.height(32.dp))
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HomeCard(
+                    cardTitle = "ثمرة محمدية",
+                    onclick = onHadithClick
+                )
+                HomeCard(cardTitle = "قنوت", onclick = onDoaaClick)
+            }
+            Spacer(Modifier.height(32.dp))
+
+
+        }
+
     }
 }
 

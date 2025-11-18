@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
-import com.muslim.qotouf.ui.common.component.ShowTafsierComponent
 import com.muslim.qotouf.ui.common.component.SurahTitleFrame
 import com.muslim.qotouf.ui.common.helper.captureComposable
 import com.muslim.qotouf.ui.common.helper.rememberScreenshotAnimation
@@ -111,17 +110,13 @@ fun ThumeraScreen(
                         ayahList = ayahList,
                         isDarkTheme = isDarkTheme
                     )
-                    ShowTafsierComponent(
-                        ayahList = ayahList,
-                        surahName = QuranSurah.getSurahName(ayah.chapter),
-                        onDayTafsierClick = onDayTafsierClick
-                    )
                     Spacer(Modifier.height(screenHeight * 0.05f))
                 }
             }
         }
             ThumeraBottomBar(
-                modifier = Modifier.align(Alignment.BottomCenter),
+                surah = QuranSurah.getSurahName(ayah.chapter),
+                modifier = Modifier.padding(bottom = 32.dp).align(Alignment.BottomCenter),
                 onBackClick = {
                     val currentAyah = ayahList.firstOrNull() ?: ayah
                     viewModel.onPreviousAyah(currentAyah)
@@ -131,6 +126,8 @@ fun ThumeraScreen(
                     viewModel.onNextAyah(currentAyah)
                 },
                 isBackEnabled = isPreviousEnabled,
+                ayahList = ayahList,
+                onDayTafsierClick = onDayTafsierClick,
                 isNextEnabled = isNextEnabled
             )
         if (flashVisible) {

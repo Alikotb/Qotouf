@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.Verse
+import com.muslim.qotouf.utils.extensions.normalizeArabic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,7 @@ class SearchViewModel @Inject constructor(
 
             allVerses = MyApp.allVerses
             cleanVerses = allVerses.map { verse ->
-                normalizeArabic(verse.text) to verse
+                verse.text.normalizeArabic() to verse
             }
 
             _versesList.value = allVerses
@@ -45,7 +46,7 @@ class SearchViewModel @Inject constructor(
                 return@launch
             }
 
-            val cleanQuery = normalizeArabic(query)
+            val cleanQuery = query.normalizeArabic()
 
             val results = cleanVerses.filter { (cleanText, _) ->
                 cleanText.contains(cleanQuery)
@@ -53,29 +54,6 @@ class SearchViewModel @Inject constructor(
 
             _versesList.value = results
         }
-    }
-    private fun normalizeArabic(text: String): String {
-        return text
-            .replace(Regex("[\\u0610-\\u061A" +
-                    "\\u064B-\\u065F" +
-                    "\\u0670" +
-                    "\\u06D6-\\u06ED" +
-                    "\\u06EE-\\u06EF" +
-                    "\\u06FA-\\u06FC" +
-                    "\\u0760-\\u077F" +
-                    "\\u08E3-\\u08FF]"), "")
-            .replace("ـ", "")
-            .replace("\u200C", "")
-            .replace("\u200D", "")
-            .replace("أ", "ا")
-            .replace("إ", "ا")
-            .replace("آ", "ا")
-            .replace("ٱ", "ا")
-            .replace("ى", "ي")
-            .replace("ة", "ه")
-            .replace("ءا", "ا")
-            .replace(" ", "")
-            .trim()
     }
 
 

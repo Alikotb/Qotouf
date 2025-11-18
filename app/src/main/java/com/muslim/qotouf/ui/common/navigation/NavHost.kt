@@ -18,6 +18,8 @@ import androidx.navigation.compose.composable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.muslim.qotouf.data.model.Verse
+import com.muslim.qotouf.ui.screens.doaa.view.DoaaScreen
+import com.muslim.qotouf.ui.screens.hadith.view.HadithScreen
 import com.muslim.qotouf.ui.screens.home.view.scrrens.CurentDayTafsirScreen
 import com.muslim.qotouf.ui.screens.home.view.scrrens.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
@@ -39,6 +41,7 @@ fun AppNavHost(
     snackBarHost: SnackbarHostState,
     appBarTitle: MutableState<String>,
 ) {
+    val screenshotController = remember { ScreenshotController() }
     NavHost(
         navController = navController,
         startDestination = ScreenRoute.HomeRoute
@@ -50,7 +53,6 @@ fun AppNavHost(
             ThirdComposable.value = null
             onFirstIconClick.value = {}
             HomeScreen(
-                snackBarHost = snackBarHost,
                 innerPadding = innerPadding,
                 onSearchClick = {
                     navController.navigate(ScreenRoute.SearchRoute)
@@ -58,6 +60,12 @@ fun AppNavHost(
                 isDarkTheme = isDarkTheme,
                 onDayTafsierClick = { surah, json ->
                     navController.navigate(ScreenRoute.CurentDayTafsierRoute(surah, json))
+                },
+                onDoaaClick = {
+                    navController.navigate(ScreenRoute.DoaaRoute)
+                },
+                onHadithClick = {
+                    navController.navigate(ScreenRoute.HadithRoute)
                 }
             )
         }
@@ -110,10 +118,8 @@ fun AppNavHost(
 
         composable<ScreenRoute.ThumeraRoute> {
             appBarTitle.value = "قـطــــوف"
-            val viewModel: ThumeraViewModel = hiltViewModel()
             firstIcon.value = Icons.Default.Share
-            val screenshotController = remember { ScreenshotController() }
-
+            val viewModel: ThumeraViewModel = hiltViewModel()
             val ayah = Verse(
                 text = it.arguments?.getString("ayah") ?: "",
                 chapter = it.arguments?.getInt("chapter") ?: 0,
@@ -142,6 +148,37 @@ fun AppNavHost(
                 onDayTafsierClick = { surah, json ->
                     navController.navigate(ScreenRoute.CurentDayTafsierRoute(surah, json))
                 }
+            )
+        }
+
+        composable<ScreenRoute.HadithRoute> {
+            appBarTitle.value = "صحيح البخاري"
+            firstIcon.value = Icons.Default.Share
+            onFirstIconClick.value = {
+
+            }
+            ThirdComposable.value = {
+                SearchThirdAppBarIcon {
+
+                }
+            }
+            HadithScreen(
+                innerPadding = innerPadding,
+            )
+        }
+        composable<ScreenRoute.DoaaRoute> {
+            appBarTitle.value = "الدعاء"
+            firstIcon.value = Icons.Default.Share
+            onFirstIconClick.value = {
+
+            }
+            ThirdComposable.value = {
+                SearchThirdAppBarIcon {
+
+                }
+            }
+            DoaaScreen(
+                innerPadding = innerPadding,
             )
         }
 

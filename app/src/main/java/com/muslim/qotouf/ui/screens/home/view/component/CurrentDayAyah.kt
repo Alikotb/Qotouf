@@ -9,19 +9,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muslim.qotouf.R
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.ui.common.component.AyahMarkComponent
+import com.muslim.qotouf.utils.extensions.normalizeArabic
 
 
 @Composable
@@ -33,12 +37,21 @@ fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: MutableState<Boolean>) 
     val text = buildAnnotatedString {
         ayahList.forEach { verse ->
             val id = "ayah_${verse.verse}"
+            val words = verse.text.split(" ")
 
-            append(verse.text)
-            append(" ")
-
+            // append words (with color)
+            for (word in words) {
+                if (word.normalizeArabic().contains("الله") || word.normalizeArabic().contains("لله")) {
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append("$word ")
+                    }
+                } else {
+                    withStyle(style = SpanStyle(color = colors.secondary)) {
+                        append("$word ")
+                    }
+                }
+            }
             appendInlineContent(id, verse.verse.toString())
-
             append(" ")
 
             inlineContentMap[id] = InlineTextContent(
@@ -57,6 +70,7 @@ fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: MutableState<Boolean>) 
             }
         }
     }
+
 
     Text(
         text = text,
