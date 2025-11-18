@@ -16,13 +16,16 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 ) : ViewModel() {
+    //ayat
     private val _curentDayAyah = MutableStateFlow<List<Verse>>(emptyList())
     val curentDayAyah = _curentDayAyah.asStateFlow()
-
+    //surah name
     private val _curentSurah = MutableStateFlow("")
     val curentSurah = _curentSurah.asStateFlow()
+
     private var allVerses: List<Verse> = emptyList()
 
+    //loading state
     private val _loading = MutableStateFlow(true)
     val loading = _loading.asStateFlow()
 
@@ -55,9 +58,6 @@ class HomeViewModel @Inject constructor(
     private suspend fun getCurentDayAyah() = withContext(Dispatchers.IO) {
 
         val ayah = allVerses.random()
-        //val verses = MyApp.allVerses
-
-
         var index = findIndexOfAyah(ayah.text)
         val ayahList = mutableListOf(allVerses[index])
         var combinedText = allVerses[index].text
@@ -73,14 +73,10 @@ class HomeViewModel @Inject constructor(
         _curentDayAyah.value = ayahList
 
     }
-
-
     private fun findIndexOfAyah(ayahText: String): Int {
         return allVerses.indexOfFirst { it.text == ayahText }
     }
-
     private fun getNextAyah(currentIndex: Int, surahNumber: Int): String {
-        //val verses = MyApp.allVerses
         val nextIndex = currentIndex + 1
         if (nextIndex >= allVerses.size) {
             return allVerses.first().text
@@ -94,5 +90,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
 }
+/*   fun getCurentDayQatfTafseer(selectedAyah: List<Verse>) {
+        val tafsier = MyApp.allTafsier
+        viewModelScope.launch {
+            _loading.value = true
+            withContext(Dispatchers.IO) {
+                val currentAyahList = selectedAyah
+                val tafsierList = mutableListOf<TafsierDtoItem>()
+                for (ayah in currentAyahList) {
+                    val tafseerForAyah = tafsier.filter { it.sura == ayah.chapter && it.verse == ayah.verse }
+                    tafsierList.addAll(tafseerForAyah)
+                }
+                _curentDayTafsier.value = tafsierList
+            }
+            _loading.value = false
+        }
+    }*/

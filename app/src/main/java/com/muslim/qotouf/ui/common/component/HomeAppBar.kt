@@ -28,10 +28,11 @@ import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 
 @Composable
 fun HomeAppBar(
+    appBarTitle: MutableState<String>,
     firstIcon: ImageVector,
     secondIcon: ImageVector,
     onSecondIconClick: () -> Unit = { isDarkTheme.value = !isDarkTheme.value },
-    ThirdComposableState: MutableState<(@Composable () -> Unit)?>? = null,
+    ThirdComposableState: MutableState<@Composable (() -> Unit)?>? = null,
     isDarkTheme: MutableState<Boolean>,
     onFirstIconClick: MutableState<() -> Unit>
 ) {
@@ -46,7 +47,7 @@ fun HomeAppBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "قـطــــوف",
+            text = appBarTitle.value,
             fontWeight = FontWeight.Bold,
             fontSize = 26.sp,
             color = Color.White

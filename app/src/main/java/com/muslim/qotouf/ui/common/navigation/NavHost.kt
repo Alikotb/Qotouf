@@ -1,5 +1,6 @@
 package com.muslim.qotouf.ui.common.navigation
 
+import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -14,8 +15,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.muslim.qotouf.data.model.Verse
-import com.muslim.qotouf.ui.screens.home.view.HomeScreen
+import com.muslim.qotouf.ui.screens.home.view.scrrens.CurentDayTafsirScreen
+import com.muslim.qotouf.ui.screens.home.view.scrrens.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 import com.muslim.qotouf.ui.screens.search.view.component.SearchThirdAppBarIcon
 import com.muslim.qotouf.ui.screens.thumera.view.ThumeraScreen
@@ -33,6 +37,7 @@ fun AppNavHost(
     firstIcon: MutableState<ImageVector>,
     onFirstIconClick: MutableState<() -> Unit>,
     snackBarHost: SnackbarHostState,
+    appBarTitle: MutableState<String>,
 ) {
     NavHost(
         navController = navController,
@@ -40,23 +45,50 @@ fun AppNavHost(
     ) {
 
         composable<ScreenRoute.HomeRoute> {
+            appBarTitle.value = "قـطــــوف"
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
-            onFirstIconClick.value ={}
+            onFirstIconClick.value = {}
             HomeScreen(
                 snackBarHost = snackBarHost,
                 innerPadding = innerPadding,
                 onSearchClick = {
                     navController.navigate(ScreenRoute.SearchRoute)
                 },
-                isDarkTheme = isDarkTheme
+                isDarkTheme = isDarkTheme,
+                onDayTafsierClick = { surah, json ->
+                    navController.navigate(ScreenRoute.CurentDayTafsierRoute(surah, json))
+                }
+            )
+        }
+        composable<ScreenRoute.CurentDayTafsierRoute> {
+            val surah = it.arguments?.getString("surah") ?: ""
+
+            val json = it.arguments?.getString("ayahList") ?: "[]"
+
+            val decodedJson = Uri.decode(json)
+            val type = object : TypeToken<List<Verse>>() {}.type
+            val ayahList: List<Verse> = Gson().fromJson(decodedJson, type)
+            appBarTitle.value = "المختصر في التفسير"
+
+            firstIcon.value = Icons.AutoMirrored.Filled.ArrowForward
+            ThirdComposable.value = null
+            onFirstIconClick.value = {
+                navController.popBackStack()
+            }
+            CurentDayTafsirScreen(
+                surah = surah,
+                innerPadding = innerPadding,
+                ayahList = ayahList,
             )
         }
 
         composable<ScreenRoute.SearchRoute> {
+            appBarTitle.value = "أقطف ثمرة"
+
             firstIcon.value = Icons.AutoMirrored.Filled.ArrowForward
             ThirdComposable.value = null
-            onFirstIconClick.value ={
+            onFirstIconClick.value = {
                 navController.popBackStack()
             }
 
@@ -77,6 +109,7 @@ fun AppNavHost(
         }
 
         composable<ScreenRoute.ThumeraRoute> {
+            appBarTitle.value = "قـطــــوف"
             val viewModel: ThumeraViewModel = hiltViewModel()
             firstIcon.value = Icons.Default.Share
             val screenshotController = remember { ScreenshotController() }
@@ -105,7 +138,10 @@ fun AppNavHost(
                 ayah = ayah,
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
-                screenshotController = screenshotController
+                screenshotController = screenshotController,
+                onDayTafsierClick = { surah, json ->
+                    navController.navigate(ScreenRoute.CurentDayTafsierRoute(surah, json))
+                }
             )
         }
 

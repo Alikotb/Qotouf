@@ -1,7 +1,8 @@
-package com.muslim.qotouf.ui.screens.home.view
+package com.muslim.qotouf.ui.screens.home.view.scrrens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
 import com.muslim.qotouf.ui.common.component.LoadingSection
+import com.muslim.qotouf.ui.common.component.ShowTafsierComponent
 import com.muslim.qotouf.ui.common.component.SurahTitleFrame
 import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 import com.muslim.qotouf.ui.screens.home.view.component.HomeCard
@@ -32,6 +34,7 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
     onSearchClick: () -> Unit,
+    onDayTafsierClick: (String,String)-> Unit,
     isDarkTheme: MutableState<Boolean>,
     snackBarHost: SnackbarHostState
 ) {
@@ -58,7 +61,16 @@ fun HomeScreen(
                 Spacer(Modifier.height(12.dp))
             }
             item {
-                CombinedAyatText(ayahList,isDarkTheme)
+                Box {
+                    CombinedAyatText(ayahList, isDarkTheme)
+                }
+            }
+            item {
+                ShowTafsierComponent(
+                    ayahList = ayahList,
+                    surahName = surahName,
+                    onDayTafsierClick = onDayTafsierClick
+                )
             }
 
 

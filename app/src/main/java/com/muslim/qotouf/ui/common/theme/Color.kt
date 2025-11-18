@@ -15,5 +15,5 @@ val AppParBackgroundColor = Color(0xFF009788)
 val PageBackgroundLight = Color(0xfffaf1e4)
 val PageBackgroundDark = Color.Black
 
-val AllahNameBackgroundLight = Color(0xff8a4625)
-val AllahNameBackgroundDark = Color(0xffd37b22)
+val TafsierTitleCardDark = Color(0xFF0D3F3A)
+val TafsierTitleCardLight = Color(0xFFE3F7F4)

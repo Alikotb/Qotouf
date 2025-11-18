@@ -7,6 +7,8 @@ sealed class ScreenRoute {
     object HomeRoute : ScreenRoute()
 
     @Serializable
+    data class CurentDayTafsierRoute(val surah: String,val ayahList: String) : ScreenRoute()
+    @Serializable
     object SearchRoute : ScreenRoute()
 
     @Serializable

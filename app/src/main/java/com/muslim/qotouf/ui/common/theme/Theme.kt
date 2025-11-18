@@ -15,14 +15,14 @@ private val DarkColorScheme = darkColorScheme(
     primary = AppParBackgroundColor,
     secondary = Color.White,
     surfaceContainer = PageBackgroundDark,
-    onSecondary = AllahNameBackgroundDark,
+    onSecondary = TafsierTitleCardDark,
     tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = AppParBackgroundColor,
     secondary = Color.Black,
-    onSecondary = AllahNameBackgroundLight,
+    onSecondary = TafsierTitleCardLight,
     surfaceContainer = PageBackgroundLight,
 
     tertiary = Pink40
