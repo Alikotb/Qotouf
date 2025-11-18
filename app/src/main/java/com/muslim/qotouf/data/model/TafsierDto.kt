@@ -2,7 +2,7 @@ package com.muslim.qotouf.data.model
 
 import kotlinx.serialization.Serializable
 
-typealias TafsierDto = ArrayList<TafsierDtoItem>
+typealias TafsierDto = List<TafsierDtoItem>
 @Serializable
 
 data class TafsierDtoItem(

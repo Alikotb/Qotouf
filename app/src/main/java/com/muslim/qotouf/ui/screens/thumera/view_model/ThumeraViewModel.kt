@@ -8,9 +8,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
+import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
-import com.muslim.qotouf.utils.quran_parser.getWholeQuranVerses
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +33,7 @@ class ThumeraViewModel @Inject constructor(
     val isNextEnabledState = _isNextEnabled.asStateFlow()
 
     init {
-        allVerses = getWholeQuranVerses(context)
+        allVerses = MyApp.allVerses
     }
 
     fun saveBitmapToGallery(bitmap: Bitmap, chapter: Int, verse: Int): Uri? {

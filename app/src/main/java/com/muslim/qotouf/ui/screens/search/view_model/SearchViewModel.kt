@@ -1,12 +1,10 @@
 package com.muslim.qotouf.ui.screens.search.view_model
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.Verse
-import com.muslim.qotouf.utils.quran_parser.getWholeQuranVerses
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +13,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _versesList = MutableStateFlow<List<Verse>>(emptyList())
@@ -31,7 +28,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
 
-            allVerses = getWholeQuranVerses(context)
+            allVerses = MyApp.allVerses
             cleanVerses = allVerses.map { verse ->
                 normalizeArabic(verse.text) to verse
             }

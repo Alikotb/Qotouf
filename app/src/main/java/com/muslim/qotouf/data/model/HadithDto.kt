@@ -2,7 +2,7 @@ package com.muslim.qotouf.data.model
 
 import kotlinx.serialization.Serializable
 
-typealias HadithDto = ArrayList<HadithDtosItem>
+typealias HadithDto = List<HadithDtosItem>
 @Serializable
 
 data class HadithDtosItem(
