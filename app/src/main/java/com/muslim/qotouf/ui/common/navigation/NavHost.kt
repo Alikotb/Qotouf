@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ fun AppNavHost(
     secondIcon: MutableState<ImageVector>,
     firstIcon: MutableState<ImageVector>,
     onFirstIconClick: MutableState<() -> Unit>,
+    snackBarHost: SnackbarHostState,
 ) {
     NavHost(
         navController = navController,
@@ -41,11 +43,12 @@ fun AppNavHost(
             ThirdComposable.value = null
             onFirstIconClick.value ={}
             HomeScreen(
+                snackBarHost = snackBarHost,
                 innerPadding = innerPadding,
-                isDarkTheme = isDarkTheme,
                 onSearchClick = {
                     navController.navigate(ScreenRoute.SearchRoute)
                 },
+                isDarkTheme = isDarkTheme
             )
         }
 
@@ -55,6 +58,7 @@ fun AppNavHost(
             onFirstIconClick.value ={}
 
             SearchScreen(
+                snackBarHost = snackBarHost,
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
                 onAyahClick = { ayah, chapter, verse ->
@@ -94,6 +98,7 @@ fun AppNavHost(
                 }
             }
             ThumeraScreen(
+                snackBarHost = snackBarHost,
                 ayah = ayah,
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,

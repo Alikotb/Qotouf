@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -27,6 +28,7 @@ import com.muslim.qotouf.ui.screens.search.view_model.SearchViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
+    snackBarHost: SnackbarHostState,
     viewModel: SearchViewModel = hiltViewModel(),
     isDarkTheme: MutableState<Boolean>,
     onAyahClick: (String, Int, Int) -> Unit,

@@ -4,17 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
@@ -26,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
+    private lateinit var snackBarHost: SnackbarHostState
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +43,9 @@ class MainActivity : ComponentActivity() {
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
             val secondAppBarIcon = remember { mutableStateOf(if (isDarkTheme.value) Icons.Default.DarkMode else Icons.Default.LightMode) }
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
-            val firstLambda = remember { mutableStateOf<()->Unit>({}) }
+            val firstLambda = remember { mutableStateOf({}) }
             navController = rememberNavController()
+            snackBarHost = remember { SnackbarHostState() }
             configureSystemUI(isDarkTheme.value)
 
             CompositionLocalProvider(
@@ -55,9 +62,16 @@ class MainActivity : ComponentActivity() {
                                 ThirdComposableState = thirdAppBarComposable
                                 )
 
+                        },
+                        snackbarHost =  {
+                            SnackbarHost(
+                                hostState = snackBarHost,
+                                modifier = Modifier.padding(bottom = 56.dp)
+                            )
                         }
                     ) { innerPadding ->
                         AppNavHost(
+                            snackBarHost = snackBarHost,
                             onFirstIconClick = firstLambda,
                             ThirdComposable = thirdAppBarComposable,
                             firstIcon = firstAppBarIcon,

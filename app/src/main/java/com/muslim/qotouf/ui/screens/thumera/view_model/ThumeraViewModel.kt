@@ -32,8 +32,15 @@ class ThumeraViewModel @Inject constructor(
     private val _isNextEnabled = MutableStateFlow(true)
     val isNextEnabledState = _isNextEnabled.asStateFlow()
 
+    private val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
+
     init {
         allVerses = MyApp.allVerses
+    }
+
+    fun clearMessage() {
+        _message.value = null
     }
 
     fun saveBitmapToGallery(bitmap: Bitmap, chapter: Int, verse: Int): Uri? {
@@ -94,93 +101,102 @@ class ThumeraViewModel @Inject constructor(
     fun initAyah(ayah: Verse) {
         _versesList.value = listOf(ayah)
         updateFlags()
-
     }
 
     fun onPreviousAyah(currentAyah: Verse) {
+        clearMessage()
+
         val currentList = _versesList.value
 
-        if (totalTextLength(currentList) > 800) {
+        if (totalTextLength(currentList) > 700) {
             _isPreviousEnabled.value = false
             _isNextEnabled.value = false
+            _message.value = "لا يمكن إضافة المزيد من الآيات"
             return
         }
 
-        val prevText = getPreviousAyah(getCurrentIndex(currentAyah), currentAyah.chapter)
+        val currentIndex = getCurrentIndex(currentAyah)
+        val previousIndex = currentIndex - 1
 
-        if (prevText.isEmpty()) {
+        if (previousIndex < 0) {
             _isPreviousEnabled.value = false
+            _message.value = "هذه بداية السورة"
             return
         }
 
-        val prevVerse = allVerses[getCurrentIndex(currentAyah) - 1]
+        val previousAyah = allVerses[previousIndex]
+
+        if (previousAyah.chapter != currentAyah.chapter) {
+            _isPreviousEnabled.value = false
+            _message.value = "هذه بداية السورة"
+            return
+        }
+
         val updated = currentList.toMutableList()
-        updated.add(0, prevVerse)
+        updated.add(0, previousAyah)
         _versesList.value = updated
 
         updateFlags()
+
+        val newFirstIndex = getCurrentIndex(updated.first())
+        if (newFirstIndex == 0 || allVerses[newFirstIndex - 1].chapter != updated.first().chapter) {
+            _message.value = "بداية السورة"
+        }
     }
 
-    fun onNextAyah(ayah: Verse) {
+    fun onNextAyah(currentAyah: Verse) {
+        clearMessage()
 
         val currentList = _versesList.value
 
-        if (totalTextLength(currentList) > 800) {
+        if (totalTextLength(currentList) > 700) {
             _isPreviousEnabled.value = false
             _isNextEnabled.value = false
+            _message.value = "لا يمكن إضافة المزيد من الآيات"
             return
         }
 
-        val nextText = getNextAyah(getCurrentIndex(ayah), ayah.chapter)
+        val currentIndex = getCurrentIndex(currentAyah)
+        val nextIndex = currentIndex + 1
 
-        if (nextText.isEmpty()) {
+        if (nextIndex >= allVerses.size) {
             _isNextEnabled.value = false
+            _message.value = "نهاية المصحف"
             return
         }
 
-        val nextVerse = allVerses[getCurrentIndex(ayah) + 1]
+        val nextAyah = allVerses[nextIndex]
+
+        if (nextAyah.chapter != currentAyah.chapter) {
+            _isNextEnabled.value = false
+            _message.value = "نهاية السورة"
+            return
+        }
+
         val updated = currentList.toMutableList()
-        updated.add(nextVerse)
+        updated.add(nextAyah)
         _versesList.value = updated
 
         updateFlags()
+
+        val newLastIndex = getCurrentIndex(updated.last())
+        if (newLastIndex == allVerses.size - 1 || allVerses[newLastIndex + 1].chapter != updated.last().chapter) {
+            _message.value = "نهاية السورة"
+        }
     }
 
     private fun updateFlags() {
         val currentList = _versesList.value
+        if (currentList.isEmpty()) return
+
         val firstIndex = getCurrentIndex(currentList.first())
         val lastIndex = getCurrentIndex(currentList.last())
-        _isPreviousEnabled.value =
-            firstIndex > 0 && allVerses[firstIndex - 1].chapter == currentList.first().chapter
-        _isNextEnabled.value =
-            lastIndex < allVerses.size - 1 && allVerses[lastIndex + 1].chapter == currentList.last().chapter
-    }
 
+        _isPreviousEnabled.value = firstIndex > 0 &&
+                allVerses[firstIndex - 1].chapter == currentList.first().chapter
 
-    private fun getNextAyah(currentIndex: Int, surahNumber: Int): String {
-        val nextIndex = currentIndex + 1
-        if (nextIndex >= allVerses.size) {
-            return ""
-        }
-        val nextAyah = allVerses[nextIndex]
-        if (nextAyah.chapter != surahNumber) {
-            return ""
-        }
-        return nextAyah.text
-
-    }
-
-    private fun getPreviousAyah(currentIndex: Int, surahNumber: Int): String {
-        val previousIndex = currentIndex - 1
-        if (previousIndex < 0) {
-            return ""
-        }
-        val previousAyah = allVerses[previousIndex]
-        if (previousAyah.chapter != surahNumber) {
-            return ""
-        }
-        return previousAyah.text
-
+        _isNextEnabled.value = lastIndex < allVerses.size - 1 &&
+                allVerses[lastIndex + 1].chapter == currentList.last().chapter
     }
 
     private fun totalTextLength(list: List<Verse>): Int {
@@ -192,8 +208,6 @@ class ThumeraViewModel @Inject constructor(
             it.chapter == ayah.chapter && it.verse == ayah.verse
         }
     }
-
-
 }
 
 class ScreenshotController {

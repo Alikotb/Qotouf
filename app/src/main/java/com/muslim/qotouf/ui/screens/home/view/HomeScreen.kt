@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -31,7 +32,8 @@ fun HomeScreen(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
     onSearchClick: () -> Unit,
-    isDarkTheme: MutableState<Boolean>
+    isDarkTheme: MutableState<Boolean>,
+    snackBarHost: SnackbarHostState
 ) {
 
     val ayahList by viewModel.curentDayAyah.collectAsState()

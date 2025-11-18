@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -44,6 +45,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun ThumeraScreen(
     modifier: Modifier = Modifier,
+    snackBarHost: SnackbarHostState,
     ayah: Verse,
     innerPadding: PaddingValues,
     viewModel: ThumeraViewModel = hiltViewModel(),
@@ -60,9 +62,14 @@ fun ThumeraScreen(
     val ayahList by viewModel.versesList.collectAsStateWithLifecycle()
     val isPreviousEnabled by viewModel.isPreviousEnabledState.collectAsStateWithLifecycle()
     val isNextEnabled by viewModel.isNextEnabledState.collectAsStateWithLifecycle()
+    val message by viewModel.message.collectAsStateWithLifecycle()
 
 
-
+    LaunchedEffect(message) {
+        message?.let {
+            snackBarHost.showSnackbar(it)
+        }
+    }
     LaunchedEffect(ayah) {
         viewModel.initAyah(ayah)
     }
