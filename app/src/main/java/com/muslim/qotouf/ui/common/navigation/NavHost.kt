@@ -2,6 +2,7 @@ package com.muslim.qotouf.ui.common.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.SnackbarHostState
@@ -53,9 +54,11 @@ fun AppNavHost(
         }
 
         composable<ScreenRoute.SearchRoute> {
-            firstIcon.value = Icons.Default.Settings
+            firstIcon.value = Icons.AutoMirrored.Filled.ArrowForward
             ThirdComposable.value = null
-            onFirstIconClick.value ={}
+            onFirstIconClick.value ={
+                navController.popBackStack()
+            }
 
             SearchScreen(
                 snackBarHost = snackBarHost,
@@ -107,7 +110,5 @@ fun AppNavHost(
         }
 
     }
-
-
 }
 
