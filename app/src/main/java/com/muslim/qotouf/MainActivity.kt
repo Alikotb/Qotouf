@@ -32,6 +32,7 @@ import com.muslim.qotouf.ui.common.component.setting.SettingBottomSheet
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
+import com.muslim.qotouf.worker.scheduleAllNotifications
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        scheduleAllNotifications(this)
         setContent {
             viewModel = hiltViewModel()
             viewModel.getDarkModeFalag()
