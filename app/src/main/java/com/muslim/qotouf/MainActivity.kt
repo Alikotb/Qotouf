@@ -1,7 +1,6 @@
 package com.muslim.qotouf
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +27,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
+import com.muslim.qotouf.ui.common.component.PermissionsFlowDialog
+import com.muslim.qotouf.ui.common.component.SebhaImageBottomSheet
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
@@ -47,21 +48,28 @@ class MainActivity : ComponentActivity() {
             viewModel = hiltViewModel()
             viewModel.getDarkModeFalag()
             val isDark = viewModel.isDark.collectAsStateWithLifecycle(initialValue = false)
+            val seetingBottomSheetState = remember { mutableStateOf(false) }
 
-            Log.d("TAG", "onCreate: $isDark")
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
-//            val secondAppBarIcon =
-//                remember { mutableStateOf(if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode) }
             val secondAppBarIcon = if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode
 
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
             val firstLambda = remember { mutableStateOf({}) }
             val appBarTitle = remember { mutableStateOf("قـطــــوف") }
+            val systemUiController = rememberSystemUiController()
+            val isFirstTime = viewModel.permissionFlag.collectAsStateWithLifecycle(initialValue = true)
+
             navController = rememberNavController()
             snackBarHost = remember { SnackbarHostState() }
 
-
-            val systemUiController = rememberSystemUiController()
+            if (isFirstTime.value) {
+                PermissionsFlowDialog(
+                    context = this,
+                    onPermissionsFlowFinished = {
+                        viewModel.savPermissionFlag(false)
+                    }
+                )
+            }
 
             SideEffect {
                 systemUiController.setStatusBarColor(
@@ -94,6 +102,7 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { innerPadding ->
                         AppNavHost(
+                            seetingBottomSheetState =seetingBottomSheetState,
                             appBarTitle = appBarTitle,
                             snackBarHost = snackBarHost,
                             onFirstIconClick = firstLambda,
@@ -103,6 +112,11 @@ class MainActivity : ComponentActivity() {
                             innerPadding = innerPadding,
                             navController = navController,
                             isDarkTheme = isDark.value
+                        )
+                    }
+                    if(seetingBottomSheetState.value){
+                        SebhaImageBottomSheet(
+                            bottomSheetState = seetingBottomSheetState
                         )
                     }
                 }

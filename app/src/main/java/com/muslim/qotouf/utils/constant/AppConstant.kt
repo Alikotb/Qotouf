@@ -9,5 +9,6 @@ object AppConstant {
     const val IS_DARK_MODE = "isDark"
     const val DOAA_INDEX = "doaa_Index"
     const val HADITH_INDEX = "hadithIndex"
+    const val IS_FIRST_TIME_PERMISSION = "ifirsttimePermissions"
 
 }

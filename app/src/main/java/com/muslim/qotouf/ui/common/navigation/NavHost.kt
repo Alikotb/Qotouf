@@ -41,6 +41,7 @@ fun AppNavHost(
     onFirstIconClick: MutableState<() -> Unit>,
     snackBarHost: SnackbarHostState,
     appBarTitle: MutableState<String>,
+    seetingBottomSheetState: MutableState<Boolean>,
 ) {
     val screenshotController = remember { ScreenshotController() }
     val viewModel: ThumeraViewModel = hiltViewModel()
@@ -54,7 +55,9 @@ fun AppNavHost(
             appBarTitle.value = "قـطــــوف"
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
-            onFirstIconClick.value = {}
+            onFirstIconClick.value = {
+                seetingBottomSheetState.value = true
+            }
 
             HomeScreen(
                 innerPadding = innerPadding,

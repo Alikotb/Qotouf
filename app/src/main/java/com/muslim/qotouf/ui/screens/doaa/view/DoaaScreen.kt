@@ -53,7 +53,7 @@ fun DoaaScreen(
     innerPadding: PaddingValues,
     viweModel: DoaaViewModel = hiltViewModel()
 ) {
-
+//    AneesAlertDialog()
     val colors = MaterialTheme.colorScheme
     val doaa by viweModel.curentDoaa.collectAsStateWithLifecycle()
     val loading by viweModel.loading.collectAsStateWithLifecycle()

@@ -1,25 +1,25 @@
 package com.muslim.qotouf.utils.extensions
 
 import android.app.Activity
-import androidx.compose.ui.graphics.Color
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
-fun Activity.configureSystemUI(darkTheme: Boolean) {
-    WindowCompat.setDecorFitsSystemWindows(window, false)
 
-    val controller = WindowInsetsControllerCompat(window, window.decorView)
+fun openAppSettings(context: Context) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        data = Uri.fromParts("package", context.packageName, null)
+    }
+    context.startActivity(intent)
+}
 
-    window.statusBarColor = if (darkTheme) Color(0xFF1B8A59).value.toInt() else Color(0xFF24B36B).value.toInt()
-    controller.isAppearanceLightStatusBars = !darkTheme
-
-    window.navigationBarColor = Color.Transparent.value.toInt()
-    controller.isAppearanceLightNavigationBars = !darkTheme
-
-    controller.systemBarsBehavior =
-        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
-    controller.hide(WindowInsetsCompat.Type.navigationBars())
-    controller.show(WindowInsetsCompat.Type.statusBars())
+fun Activity.isPermissionPermanentlyDenied(
+    permission: String
+): Boolean {
+    return !ActivityCompat.shouldShowRequestPermissionRationale(this, permission) &&
+            ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED
 }

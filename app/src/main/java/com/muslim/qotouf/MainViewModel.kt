@@ -14,11 +14,15 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val repo: IRepo
 ) : ViewModel() {
-    private val _isDark = MutableStateFlow<Boolean>(false)
+    private val _isDark = MutableStateFlow(false)
     val isDark = _isDark.asStateFlow()
+
+    private val _permissionFlag = MutableStateFlow(false)
+    val permissionFlag = _permissionFlag.asStateFlow()
 
     init {
         getDarkModeFalag()
+        getPermissionFlag()
     }
 
     fun getDarkModeFalag(){
@@ -33,5 +37,16 @@ class MainViewModel @Inject constructor(
             repo.saveData(AppConstant.IS_DARK_MODE, isDark)
         }
     }
-
+    fun getPermissionFlag(){
+        viewModelScope.launch {
+            repo.getData(AppConstant.IS_FIRST_TIME_PERMISSION,true).collect{
+                _permissionFlag.value = it
+            }
+        }
+    }
+    fun savPermissionFlag(pemission: Boolean){
+        viewModelScope.launch {
+            repo.saveData(AppConstant.IS_FIRST_TIME_PERMISSION, pemission)
+        }
+    }
 }
