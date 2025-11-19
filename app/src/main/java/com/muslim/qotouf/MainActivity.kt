@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.muslim.qotouf.data.local.data_store.DataStoreImpl
 import com.muslim.qotouf.ui.common.component.HomeAppBar
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
@@ -35,11 +36,11 @@ class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private lateinit var snackBarHost: SnackbarHostState
 
+//    private lateinit var dataStore: DataStoreImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             val isDarkTheme = remember { mutableStateOf(false) }
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }

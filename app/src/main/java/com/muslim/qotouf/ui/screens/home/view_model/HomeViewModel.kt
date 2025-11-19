@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.Verse
+import com.muslim.qotouf.data.repo.IRepo
 import com.muslim.qotouf.enum.QuranSurah
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+   val repo: IRepo
 ) : ViewModel() {
     //ayat
     private val _curentDayAyah = MutableStateFlow<List<Verse>>(emptyList())
@@ -49,6 +51,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getCurentSurah() = withContext(Dispatchers.IO) {
+
         if (_curentDayAyah.value.isNotEmpty()) {
             _curentSurah.value = QuranSurah.getSurahName(_curentDayAyah.value.first().chapter)
         }
