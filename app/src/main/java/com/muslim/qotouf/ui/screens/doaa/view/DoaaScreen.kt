@@ -1,6 +1,5 @@
 package com.muslim.qotouf.ui.screens.doaa.view
 
-import android.text.Layout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
