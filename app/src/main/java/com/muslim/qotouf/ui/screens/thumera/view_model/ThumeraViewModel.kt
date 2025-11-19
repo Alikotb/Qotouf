@@ -10,7 +10,6 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.Verse
-import com.muslim.qotouf.enum.QuranSurah
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,9 +42,8 @@ class ThumeraViewModel @Inject constructor(
         _message.value = null
     }
 
-    fun saveBitmapToGallery(bitmap: Bitmap, chapter: Int, verse: Int): Uri? {
-        val surah = QuranSurah.getSurahName(chapter)
-        val fileName = "سورة ${surah}_${verse}}.png"
+    fun saveBitmapToGallery(bitmap: Bitmap, surah: String, verse: Int): Uri? {
+        val fileName = "${surah}_${verse}.png"
         val resolver = context.contentResolver
 
         val contentValues = ContentValues().apply {

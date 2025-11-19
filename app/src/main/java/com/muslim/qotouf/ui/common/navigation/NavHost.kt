@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.muslim.qotouf.data.model.Verse
+import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.screens.doaa.view.DoaaScreen
 import com.muslim.qotouf.ui.screens.hadith.view.HadithScreen
 import com.muslim.qotouf.ui.screens.home.view.scrrens.CurentDayTafsirScreen
@@ -42,6 +43,8 @@ fun AppNavHost(
     appBarTitle: MutableState<String>,
 ) {
     val screenshotController = remember { ScreenshotController() }
+    val viewModel: ThumeraViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         startDestination = ScreenRoute.HomeRoute
@@ -52,6 +55,7 @@ fun AppNavHost(
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
             onFirstIconClick.value = {}
+
             HomeScreen(
                 innerPadding = innerPadding,
                 onSearchClick = {
@@ -119,26 +123,15 @@ fun AppNavHost(
         composable<ScreenRoute.ThumeraRoute> {
             appBarTitle.value = "قـطــــوف"
             firstIcon.value = Icons.Default.Share
-            val viewModel: ThumeraViewModel = hiltViewModel()
             val ayah = Verse(
                 text = it.arguments?.getString("ayah") ?: "",
                 chapter = it.arguments?.getInt("chapter") ?: 0,
                 verse = it.arguments?.getInt("verse") ?: 0
             )
 
-            onFirstIconClick.value = {
-                screenshotController.capture { bitmap ->
-                    viewModel.shareBitmapDirectly(bitmap)
-                }
-            }
+            val screenTitle = QuranSurah.getSurahName(ayah.chapter)
 
-            ThirdComposable.value = {
-                SearchThirdAppBarIcon {
-                    screenshotController.capture { bitmap ->
-                        viewModel.saveBitmapToGallery(bitmap, ayah.chapter, ayah.verse)
-                    }
-                }
-            }
+            ScreenShootAction(onFirstIconClick, screenshotController, viewModel, ayah.verse,screenTitle,ThirdComposable)
             ThumeraScreen(
                 snackBarHost = snackBarHost,
                 ayah = ayah,
@@ -154,34 +147,52 @@ fun AppNavHost(
         composable<ScreenRoute.HadithRoute> {
             appBarTitle.value = "صحيح البخاري"
             firstIcon.value = Icons.Default.Share
-            onFirstIconClick.value = {
+            val id = ((System.currentTimeMillis() / 1000) % 1000000).toInt()
 
-            }
-            ThirdComposable.value = {
-                SearchThirdAppBarIcon {
+            ScreenShootAction(onFirstIconClick, screenshotController, viewModel,id , "صحيح البخاري",ThirdComposable)
 
-                }
-            }
             HadithScreen(
+                screenshotController = screenshotController,
                 innerPadding = innerPadding,
             )
         }
         composable<ScreenRoute.DoaaRoute> {
             appBarTitle.value = "الدعاء"
             firstIcon.value = Icons.Default.Share
-            onFirstIconClick.value = {
+            val id = ((System.currentTimeMillis() / 1000) % 1000000).toInt()
 
-            }
-            ThirdComposable.value = {
-                SearchThirdAppBarIcon {
+            ScreenShootAction(onFirstIconClick, screenshotController, viewModel, id,"الدعاء",ThirdComposable)
 
-                }
-            }
             DoaaScreen(
+                screenshotController = screenshotController,
                 innerPadding = innerPadding,
             )
         }
 
+    }
+}
+
+@Composable
+private fun ScreenShootAction(
+    onFirstIconClick: MutableState<() -> Unit>,
+    screenshotController: ScreenshotController,
+    viewModel: ThumeraViewModel,
+    screenId: Int,
+    screenTitle: String,
+    ThirdComposable: MutableState<@Composable (() -> Unit)?>
+) {
+    onFirstIconClick.value = {
+        screenshotController.capture { bitmap ->
+            viewModel.shareBitmapDirectly(bitmap)
+        }
+    }
+
+    ThirdComposable.value = {
+        SearchThirdAppBarIcon {
+            screenshotController.capture { bitmap ->
+                viewModel.saveBitmapToGallery(bitmap, screenTitle, screenId)
+            }
+        }
     }
 }
 

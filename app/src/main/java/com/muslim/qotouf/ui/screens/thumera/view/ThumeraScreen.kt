@@ -51,7 +51,7 @@ fun ThumeraScreen(
     viewModel: ThumeraViewModel = hiltViewModel(),
     isDarkTheme: MutableState<Boolean>,
     screenshotController: ScreenshotController,
-    onDayTafsierClick: (String, String) ->Unit
+    onDayTafsierClick: (String, String) -> Unit
 ) {
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp.dp
@@ -95,7 +95,7 @@ fun ThumeraScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .captureComposable(screenshotController){
+                        .captureComposable(screenshotController) {
                             flashVisible = true
                             triggerScreenshot()
                         }
@@ -114,22 +114,24 @@ fun ThumeraScreen(
                 }
             }
         }
-            ThumeraBottomBar(
-                surah = QuranSurah.getSurahName(ayah.chapter),
-                modifier = Modifier.padding(bottom = 32.dp).align(Alignment.BottomCenter),
-                onBackClick = {
-                    val currentAyah = ayahList.firstOrNull() ?: ayah
-                    viewModel.onPreviousAyah(currentAyah)
-                },
-                onNextClick = {
-                    val currentAyah = ayahList.lastOrNull() ?: ayah
-                    viewModel.onNextAyah(currentAyah)
-                },
-                isBackEnabled = isPreviousEnabled,
-                ayahList = ayahList,
-                onDayTafsierClick = onDayTafsierClick,
-                isNextEnabled = isNextEnabled
-            )
+        ThumeraBottomBar(
+            surah = QuranSurah.getSurahName(ayah.chapter),
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .align(Alignment.BottomCenter),
+            onBackClick = {
+                val currentAyah = ayahList.firstOrNull() ?: ayah
+                viewModel.onPreviousAyah(currentAyah)
+            },
+            onNextClick = {
+                val currentAyah = ayahList.lastOrNull() ?: ayah
+                viewModel.onNextAyah(currentAyah)
+            },
+            isBackEnabled = isPreviousEnabled,
+            ayahList = ayahList,
+            onDayTafsierClick = onDayTafsierClick,
+            isNextEnabled = isNextEnabled
+        )
         if (flashVisible) {
             Box(
                 modifier = Modifier
