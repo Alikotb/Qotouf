@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.common.component
+package com.muslim.qotouf.ui.common.component.permission
 
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.muslim.qotouf.enum.AppPermission
+import com.muslim.qotouf.ui.common.component.QotoufAlertDialog
 import com.muslim.qotouf.utils.extensions.isPermissionPermanentlyDenied
 import com.muslim.qotouf.utils.extensions.openAppSettings
 

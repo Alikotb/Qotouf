@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.anees.ui.screens.hisn_almuslim.components.TafsierScreenComponent
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.ui.common.component.LoadingSection
-import com.muslim.qotouf.ui.common.component.SurahTitleFrame
+import com.muslim.qotouf.ui.common.component.quraan.SurahTitleFrame
 import com.muslim.qotouf.ui.screens.home.view_model.CurentDayTafsierViewModel
 
 

@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.common.component
+package com.muslim.qotouf.ui.common.component.quraan
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme

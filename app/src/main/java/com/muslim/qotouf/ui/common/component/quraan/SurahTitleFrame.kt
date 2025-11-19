@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.common.component
+package com.muslim.qotouf.ui.common.component.quraan
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

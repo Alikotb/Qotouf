@@ -11,4 +11,9 @@ object AppConstant {
     const val HADITH_INDEX = "hadithIndex"
     const val IS_FIRST_TIME_PERMISSION = "ifirsttimePermissions"
 
+    const val DOAA_NOTIFICATION_FLAG = "dooa_flag"
+    const val QURAN_NOTIFICATION_FLAG = "quran_flag"
+    const val HADITH_NOTIFICATION_FLAG = "hadith_flag"
+
+
 }

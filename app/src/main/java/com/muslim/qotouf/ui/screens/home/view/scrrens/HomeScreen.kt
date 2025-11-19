@@ -19,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
 import com.muslim.qotouf.ui.common.component.LoadingSection
 import com.muslim.qotouf.ui.common.component.ShowTafsierComponent
-import com.muslim.qotouf.ui.common.component.SurahTitleFrame
+import com.muslim.qotouf.ui.common.component.quraan.InTheNameOfAllah
+import com.muslim.qotouf.ui.common.component.quraan.SurahTitleFrame
 import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 import com.muslim.qotouf.ui.screens.home.view.component.HomeCard
 import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel

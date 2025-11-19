@@ -29,8 +29,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
-import com.muslim.qotouf.ui.common.component.InTheNameOfAllah
-import com.muslim.qotouf.ui.common.component.SurahTitleFrame
+import com.muslim.qotouf.ui.common.component.quraan.InTheNameOfAllah
+import com.muslim.qotouf.ui.common.component.quraan.SurahTitleFrame
 import com.muslim.qotouf.ui.common.helper.captureComposable
 import com.muslim.qotouf.ui.common.helper.rememberScreenshotAnimation
 import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText

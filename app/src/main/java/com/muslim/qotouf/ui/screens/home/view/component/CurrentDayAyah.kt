@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muslim.qotouf.R
 import com.muslim.qotouf.data.model.Verse
-import com.muslim.qotouf.ui.common.component.AyahMarkComponent
+import com.muslim.qotouf.ui.common.component.quraan.AyahMarkComponent
 import com.muslim.qotouf.utils.extensions.normalizeArabic
 
 

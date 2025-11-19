@@ -27,8 +27,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
-import com.muslim.qotouf.ui.common.component.PermissionsFlowDialog
-import com.muslim.qotouf.ui.common.component.SebhaImageBottomSheet
+import com.muslim.qotouf.ui.common.component.permission.PermissionsFlowDialog
+import com.muslim.qotouf.ui.common.component.setting.SettingBottomSheet
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
@@ -115,7 +115,8 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     if(seetingBottomSheetState.value){
-                        SebhaImageBottomSheet(
+                        SettingBottomSheet(
+                            viewModel = viewModel,
                             bottomSheetState = seetingBottomSheetState
                         )
                     }

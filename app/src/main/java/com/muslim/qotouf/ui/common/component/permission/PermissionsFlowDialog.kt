@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.common.component
+package com.muslim.qotouf.ui.common.component.permission
 
 import android.Manifest
 import android.os.Build
@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.muslim.qotouf.MainActivity
 import com.muslim.qotouf.enum.AppPermission
+import com.muslim.qotouf.ui.common.component.QotoufAlertDialog
 
 
 @Composable
@@ -62,6 +63,7 @@ fun PermissionsFlowDialog(
                             notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         } else skipPermission()
                     }
+
                     else -> {}
                 }
             },
