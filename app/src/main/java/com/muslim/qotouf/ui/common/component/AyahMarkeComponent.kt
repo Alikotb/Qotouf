@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +24,7 @@ fun AyahMarkComponent(
     size: Int = 36,
     fontSize: Int = 14,
     fontWeight: FontWeight = FontWeight.Bold,
-    isDarkTheme:  MutableState<Boolean>,
+    isDarkTheme: Boolean,
 ) {
     val colors = MaterialTheme.colorScheme
     Box(
@@ -33,10 +32,10 @@ fun AyahMarkComponent(
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(if(!isDarkTheme.value)R.drawable.ayah_marke else R.drawable.ayahmark),
+            painter = painterResource(if(!isDarkTheme)R.drawable.ayah_marke else R.drawable.ayahmark),
             contentDescription = "Ayah Mark",
             modifier = Modifier.fillMaxSize(),
-            colorFilter = if (isDarkTheme.value) ColorFilter.tint(Color.White) else null
+            colorFilter = if (isDarkTheme) ColorFilter.tint(Color.White) else null
 
         )
 

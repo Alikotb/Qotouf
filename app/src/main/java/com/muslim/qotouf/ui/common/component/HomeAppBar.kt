@@ -31,9 +31,8 @@ fun HomeAppBar(
     appBarTitle: MutableState<String>,
     firstIcon: ImageVector,
     secondIcon: ImageVector,
-    onSecondIconClick: () -> Unit = { isDarkTheme.value = !isDarkTheme.value },
+    onSecondIconClick: () -> Unit ,
     ThirdComposableState: MutableState<@Composable (() -> Unit)?>? = null,
-    isDarkTheme: MutableState<Boolean>,
     onFirstIconClick: MutableState<() -> Unit>
 ) {
     Row(

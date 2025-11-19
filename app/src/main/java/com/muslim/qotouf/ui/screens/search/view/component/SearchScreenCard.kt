@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +26,7 @@ import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 @Composable
 fun SearchScreenCard(
     ayah: Verse,
-    isDarkTheme: MutableState<Boolean>,
+    isDarkTheme: Boolean,
     onClick: (String, Int, Int) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme

@@ -1,6 +1,7 @@
 package com.muslim.qotouf
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -21,10 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.muslim.qotouf.data.local.data_store.DataStoreImpl
 import com.muslim.qotouf.ui.common.component.HomeAppBar
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
@@ -35,16 +37,23 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private lateinit var snackBarHost: SnackbarHostState
+    private lateinit var viewModel: MainViewModel
 
-//    private lateinit var dataStore: DataStoreImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val isDarkTheme = remember { mutableStateOf(false) }
+            viewModel = hiltViewModel()
+            viewModel.getDarkModeFalag()
+            val isDark = viewModel.isDark.collectAsStateWithLifecycle(initialValue = false)
+
+            Log.d("TAG", "onCreate: $isDark")
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
-            val secondAppBarIcon = remember { mutableStateOf(if (isDarkTheme.value) Icons.Default.DarkMode else Icons.Default.LightMode) }
+//            val secondAppBarIcon =
+//                remember { mutableStateOf(if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode) }
+            val secondAppBarIcon = if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode
+
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
             val firstLambda = remember { mutableStateOf({}) }
             val appBarTitle = remember { mutableStateOf("قـطــــوف") }
@@ -62,20 +71,22 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalLayoutDirection provides LayoutDirection.Rtl
             ) {
-                QotoufTheme(darkTheme = isDarkTheme.value, dynamicColor = false) {
+                QotoufTheme(darkTheme = isDark.value, dynamicColor = false) {
                     Scaffold(
                         topBar = {
                             HomeAppBar(
                                 appBarTitle = appBarTitle,
                                 onFirstIconClick = firstLambda,
-                                isDarkTheme = isDarkTheme,
                                 firstIcon = firstAppBarIcon.value,
-                                secondIcon = secondAppBarIcon.value,
-                                ThirdComposableState = thirdAppBarComposable
-                                )
+                                secondIcon = secondAppBarIcon,
+                                ThirdComposableState = thirdAppBarComposable,
+                                onSecondIconClick = {
+                                    viewModel.savDarkViewModelFlag(!isDark.value)
+                                }
+                            )
 
                         },
-                        snackbarHost =  {
+                        snackbarHost = {
                             SnackbarHost(
                                 hostState = snackBarHost,
                                 modifier = Modifier.padding(bottom = 56.dp)
@@ -91,7 +102,7 @@ class MainActivity : ComponentActivity() {
                             secondIcon = secondAppBarIcon,
                             innerPadding = innerPadding,
                             navController = navController,
-                            isDarkTheme = isDarkTheme
+                            isDarkTheme = isDark.value
                         )
                     }
                 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.Placeholder
@@ -29,7 +28,7 @@ import com.muslim.qotouf.utils.extensions.normalizeArabic
 
 
 @Composable
-fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: MutableState<Boolean>) {
+fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: Boolean) {
 
     val colors = MaterialTheme.colorScheme
     val inlineContentMap = mutableMapOf<String, InlineTextContent>()

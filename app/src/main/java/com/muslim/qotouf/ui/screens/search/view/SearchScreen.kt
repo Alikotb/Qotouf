@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,7 +29,7 @@ fun SearchScreen(
     innerPadding: PaddingValues,
     snackBarHost: SnackbarHostState,
     viewModel: SearchViewModel = hiltViewModel(),
-    isDarkTheme: MutableState<Boolean>,
+    isDarkTheme: Boolean,
     onAyahClick: (String, Int, Int) -> Unit,
 ) {
 
@@ -56,7 +55,7 @@ fun SearchScreen(
                     items = list,
                     key = { it.text }
                 ) { ayah ->
-                    SearchScreenCard(ayah = ayah,isDarkTheme = isDarkTheme ){a,b,c->
+                    SearchScreenCard(ayah = ayah, isDarkTheme = isDarkTheme ){ a, b, c->
                         onAyahClick(a, b, c)
                     }
                     Spacer(Modifier.height(12.dp))
