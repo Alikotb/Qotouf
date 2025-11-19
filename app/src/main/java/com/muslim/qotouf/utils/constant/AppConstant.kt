@@ -15,5 +15,9 @@ object AppConstant {
     const val QURAN_NOTIFICATION_FLAG = "quran_flag"
     const val HADITH_NOTIFICATION_FLAG = "hadith_flag"
 
+    const val DOAA_CHANEL_ID = "doaa_chanel_id"
+    const val QURAN_CHANEL_ID = "quran_chanel_id"
+    const val HADITH_CHANEL_ID = "hadith_chanel_id"
+
 
 }

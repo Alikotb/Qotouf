@@ -7,7 +7,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 
 enum class AppPermission(val message: String, val title: String) {
-    Notification("نحتاج إذنك لإرسال إشعارات الأذان في أوقاتها.", "إذن الإشعارات");
+    Notification("نحتاج إذنك لإرسال إشعارات القران والحديث والدعاء.", "إذن الإشعارات");
     fun isGranted(context: Context): Boolean {
         return when (this) {
             Notification -> {
