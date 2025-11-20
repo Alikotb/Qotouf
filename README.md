@@ -77,3 +77,5 @@ For any questions, issues, or suggestions, feel free to reach out to the develop
 ---
 
 **End of README**
+> 🔗 **[اضغط هنا لقراءة النسخة العربية](README_AR.md)**  
+
