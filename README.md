@@ -33,10 +33,8 @@ You can install the app on your device and try it out yourself:
 - **Sharing** Content Provider
 
 ### 📸 **Screenshots**
-![Screenshot 1](img/1.png)  
-![Screenshot 2](img/2.png)  
-![Screenshot 3](img/3.png)  
-
+![light mode](readme/light.png)  
+![dark mode](readme/dark.png)  
 
 ## 🛠 **Setup and Installation**
 
