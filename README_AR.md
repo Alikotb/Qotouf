@@ -35,9 +35,8 @@
 ---
 
 ### 📸 **صور من التطبيق**
-![Screenshot 1](img/1.png)  
-![Screenshot 2](img/2.png)  
-![Screenshot 3](img/3.png)  
+![الوضوع الفاتح](readme/light.png)  
+![الوضع الداكن](readme/dark.png)  
 
 ---
 
