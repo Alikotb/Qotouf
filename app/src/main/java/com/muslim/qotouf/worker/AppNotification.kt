@@ -6,7 +6,12 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.muslim.qotouf.R
+import java.util.concurrent.TimeUnit
 
 fun showNotification(
     context: Context,
@@ -47,4 +52,36 @@ fun createNotificationChannel(
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+}
+
+fun setNotification(
+    ctx: Context,
+    interval:Long,
+    title: String,
+    message: String,
+    notificationId: Int,
+    channelId: String,
+    isEnable: Boolean
+){
+
+    val data = workDataOf(
+        "title" to title,
+        "message" to message,
+        "notificationId" to notificationId,
+        "channelId" to channelId,
+        "isEnable" to isEnable
+    )
+
+    val workRequest = PeriodicWorkRequestBuilder<MyPeriodicWorker>(
+        interval , TimeUnit.HOURS
+    )
+        .setInputData(data)
+        .build()
+
+    WorkManager.getInstance(ctx).enqueueUniquePeriodicWork(
+        "my_periodic_notification",
+        ExistingPeriodicWorkPolicy.REPLACE,
+        workRequest
+    )
+
 }

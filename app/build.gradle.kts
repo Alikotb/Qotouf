@@ -68,6 +68,7 @@ dependencies {
     //Scoped API
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
 
+    //hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
@@ -75,16 +76,20 @@ dependencies {
 
     //icons
     implementation ("androidx.compose.material:material-icons-extended:1.4.0")
-//    //Hilt for compose-Navigation
-//    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //navigation
     val navVersion = "2.8.8"
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation ("com.google.code.gson:gson:2.10.1")
 
+    //status bar color
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
 
+    //data store
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+
+    //work manager
+    implementation ("androidx.work:work-runtime-ktx:2.10.1")
+
 
 }

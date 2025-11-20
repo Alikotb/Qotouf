@@ -16,6 +16,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,13 +25,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.enum.AppPermission
+import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.permission.rememberPermissionRequestHandler
+import com.muslim.qotouf.ui.screens.doaa.view_model.DoaaViewModel
+import com.muslim.qotouf.ui.screens.hadith.view_model.HadithViewModel
+import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
+import com.muslim.qotouf.utils.constant.AppConstant
+import com.muslim.qotouf.worker.setNotification
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,18 +46,31 @@ import com.muslim.qotouf.ui.common.component.permission.rememberPermissionReques
 fun SettingBottomSheet(
     bottomSheetState: MutableState<Boolean>,
     viewModel: MainViewModel,
-
-    ) {
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    hadithViewModel: HadithViewModel = hiltViewModel(),
+    doaaViewModel: DoaaViewModel = hiltViewModel()
+) {
+    //bottom sheet flag
     val sheetState = rememberModalBottomSheetState()
+    //compose configuration
     val colors = MaterialTheme.colorScheme
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    //setting states
     val quranState = viewModel.quranFlag.collectAsStateWithLifecycle()
     val hadithState = viewModel.hadithFlag.collectAsStateWithLifecycle()
     val doaaState = viewModel.doaaFlag.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
+    //home state
+    val curentAyahNotificationData by homeViewModel.curentDayAyah.collectAsStateWithLifecycle()
+
+    //hadith state
+    val hadithNotificationData by hadithViewModel.curentHadith.collectAsStateWithLifecycle()
+
+    //doaa state
+    val doaaNotificationData by doaaViewModel.curentDoaa.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.addObserver(
@@ -86,7 +107,15 @@ fun SettingBottomSheet(
         rationaleTitle = "إذن الإشعارات مطلوب",
         rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
         onGranted = {
-
+            setNotification(
+                ctx = context,
+                interval = 12,
+                title = QuranSurah.getSurahName(curentAyahNotificationData.first().chapter),
+                message = curentAyahNotificationData.joinToString(separator = "\n"),
+                notificationId = 1000,
+                channelId = AppConstant.QURAN_CHANEL_ID,
+                isEnable = quranState.value,
+            )
             viewModel.savQuranSettingFlag(true)
         },
         onDeclined = {
@@ -103,7 +132,15 @@ fun SettingBottomSheet(
         rationaleTitle = "إذن الإشعارات مطلوب",
         rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
         onGranted = {
-
+            setNotification(
+                ctx = context,
+                interval = 12,
+                title = "من صحيح البخاري",
+                message = hadithNotificationData?.text?:"عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وآله وسلم قال: (( كل أمتي يدخلون الجنة إلا من أبى)) قالوا : يا رسول الله: ومن يأبى؟! قال: ((من أطاعني دخل الجنة، ومن عصاني فقد أبى))\n",
+                notificationId = 1001,
+                channelId = AppConstant.HADITH_CHANEL_ID,
+                isEnable = hadithState.value,
+            )
             viewModel.savHadithSettingFlag(true)
         },
         onDeclined = {
@@ -121,7 +158,16 @@ fun SettingBottomSheet(
             rationaleTitle = "إذن الإشعارات مطلوب",
             rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
             onGranted = {
-
+                setNotification(
+                    ctx = context,
+                    interval = 8,
+                    title = doaaNotificationData?.category ?: "سؤال الله الصبر",
+                    message = doaaNotificationData?.duaa?.joinToString(separator = "\n")
+                        ?: "ربنا ولا تحملنا ما لا طاقة لنا به",
+                    notificationId = 1002,
+                    channelId = AppConstant.DOAA_CHANEL_ID,
+                    isEnable = doaaState.value,
+                )
                 viewModel.savDoaaSettingFlag(true)
             },
             onDeclined = {
