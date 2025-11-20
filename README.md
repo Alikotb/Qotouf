@@ -1,3 +1,4 @@
+> 🌍 **Available Languages:** [🇬🇧 English](README.md) | [🇪🇬 العربية](README_AR.md)
 
 # Qotouf - Your Islamic Companion
 
