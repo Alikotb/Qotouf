@@ -109,7 +109,7 @@ fun SettingBottomSheet(
         onGranted = {
             setNotification(
                 ctx = context,
-                interval = 12,
+                interval = 8,
                 title = QuranSurah.getSurahName(curentAyahNotificationData.first().chapter),
                 message = curentAyahNotificationData.joinToString(separator = "\n"),
                 notificationId = 1000,
@@ -134,7 +134,7 @@ fun SettingBottomSheet(
         onGranted = {
             setNotification(
                 ctx = context,
-                interval = 12,
+                interval = 8,
                 title = "من صحيح البخاري",
                 message = hadithNotificationData?.text?:"عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وآله وسلم قال: (( كل أمتي يدخلون الجنة إلا من أبى)) قالوا : يا رسول الله: ومن يأبى؟! قال: ((من أطاعني دخل الجنة، ومن عصاني فقد أبى))\n",
                 notificationId = 1001,
@@ -160,7 +160,7 @@ fun SettingBottomSheet(
             onGranted = {
                 setNotification(
                     ctx = context,
-                    interval = 8,
+                    interval = 6,
                     title = doaaNotificationData?.category ?: "سؤال الله الصبر",
                     message = doaaNotificationData?.duaa?.joinToString(separator = "\n")
                         ?: "ربنا ولا تحملنا ما لا طاقة لنا به",
