@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
 import com.muslim.qotouf.ui.common.component.permission.PermissionsFlowDialog
-import com.muslim.qotouf.ui.common.component.setting.SettingBottomSheet
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
 import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
@@ -48,7 +47,6 @@ class MainActivity : ComponentActivity() {
             viewModel = hiltViewModel()
             viewModel.getDarkModeFalag()
             val isDark = viewModel.isDark.collectAsStateWithLifecycle(initialValue = false)
-            val seetingBottomSheetState = remember { mutableStateOf(false) }
 
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
             val secondAppBarIcon = if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode
@@ -102,7 +100,6 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { innerPadding ->
                         AppNavHost(
-                            seetingBottomSheetState =seetingBottomSheetState,
                             appBarTitle = appBarTitle,
                             snackBarHost = snackBarHost,
                             onFirstIconClick = firstLambda,
@@ -111,15 +108,11 @@ class MainActivity : ComponentActivity() {
                             secondIcon = secondAppBarIcon,
                             innerPadding = innerPadding,
                             navController = navController,
+                            mainViewModel = viewModel,
                             isDarkTheme = isDark.value
                         )
                     }
-                    if(seetingBottomSheetState.value){
-                        SettingBottomSheet(
-                            viewModel = viewModel,
-                            bottomSheetState = seetingBottomSheetState
-                        )
-                    }
+
                 }
             }
         }

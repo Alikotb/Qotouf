@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.common.component.setting
+package com.muslim.qotouf.ui.screens.setting.view.component.setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,14 +34,15 @@ fun SettingSubCard(
     title: String = "إشعارات القراءن",
     onClick: () -> Unit = {}
 ) {
+    val colors = MaterialTheme.colorScheme
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 12.dp)
             .height(64.dp)
             .clip(RoundedCornerShape(12.dp))
-            .border(1.dp, Color(0xFF009788), RoundedCornerShape(12.dp))
-            .background(Color(0xfff8f5e6))
+            .border(1.dp, colors.onSecondaryContainer, RoundedCornerShape(12.dp))
+            .background(colors.onSurfaceVariant)
             .clickable {
                 onClick()
             },
@@ -55,7 +57,8 @@ fun SettingSubCard(
                 title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily(Font(R.font.othmani))
+                fontFamily = FontFamily(Font(R.font.othmani)),
+                color = colors.secondary
             )
             Box(
                 modifier = Modifier.size(36.dp)

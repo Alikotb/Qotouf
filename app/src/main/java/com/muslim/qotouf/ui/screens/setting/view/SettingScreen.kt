@@ -1,25 +1,22 @@
-package com.muslim.qotouf.ui.common.component.setting
+package com.muslim.qotouf.ui.screens.setting.view
 
 import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -37,25 +34,26 @@ import com.muslim.qotouf.ui.common.component.permission.rememberPermissionReques
 import com.muslim.qotouf.ui.screens.doaa.view_model.DoaaViewModel
 import com.muslim.qotouf.ui.screens.hadith.view_model.HadithViewModel
 import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
+import com.muslim.qotouf.ui.screens.setting.view.component.setting.CustomSlider
+import com.muslim.qotouf.ui.screens.setting.view.component.setting.SettingSubCard
 import com.muslim.qotouf.utils.constant.AppConstant
 import com.muslim.qotouf.worker.setNotification
 
+
 @SuppressLint("ConfigurationScreenWidthHeight")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingBottomSheet(
-    bottomSheetState: MutableState<Boolean>,
+fun SettingScreen(
+    innerPadding: PaddingValues,
     viewModel: MainViewModel,
     homeViewModel: HomeViewModel = hiltViewModel(),
     hadithViewModel: HadithViewModel = hiltViewModel(),
     doaaViewModel: DoaaViewModel = hiltViewModel()
 ) {
-    //bottom sheet flag
-    val sheetState = rememberModalBottomSheetState()
+
     //compose configuration
     val colors = MaterialTheme.colorScheme
     val config = LocalConfiguration.current
-    val screenHeight = config.screenHeightDp
+    val screenHeight = config.screenHeightDp.dp
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     //setting states
@@ -182,30 +180,27 @@ fun SettingBottomSheet(
         viewModel.getHadithSettingFlag()
         viewModel.getQuranSettingFlag()
     }
-    ModalBottomSheet(
-        onDismissRequest = { bottomSheetState.value = false },
-        sheetState = sheetState,
-        containerColor = Color(0xFFF5F5DB),
-        dragHandle = { BottomSheetDefaults.DragHandle() }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(colors.surfaceContainer),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = (screenHeight * .35).dp, max = (screenHeight * .65).dp)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .background(Color(0xFFF5F5DB)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
 
+        item {
+            Spacer(Modifier.height(screenHeight * 0.02f))
             Text(
-                text = "الإعدادت",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = colors.primary,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+            text = "إعدادت الأشعار",
+            style = MaterialTheme.typography.titleLarge.copy(
+                color = colors.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
+        )
+        }
+        item {
             SettingSubCard(
                 onClick = {
                     if (!quranState.value) {
@@ -240,10 +235,8 @@ fun SettingBottomSheet(
                 isEnabled = doaaState.value
             )
         }
+        item {
+            CustomSlider()
+        }
     }
-
 }
-
-
-
-

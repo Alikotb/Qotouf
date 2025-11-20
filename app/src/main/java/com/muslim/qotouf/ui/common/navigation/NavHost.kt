@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.screens.doaa.view.DoaaScreen
@@ -25,6 +26,7 @@ import com.muslim.qotouf.ui.screens.home.view.scrrens.CurentDayTafsirScreen
 import com.muslim.qotouf.ui.screens.home.view.scrrens.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 import com.muslim.qotouf.ui.screens.search.view.component.SearchThirdAppBarIcon
+import com.muslim.qotouf.ui.screens.setting.view.SettingScreen
 import com.muslim.qotouf.ui.screens.thumera.view.ThumeraScreen
 import com.muslim.qotouf.ui.screens.thumera.view_model.ScreenshotController
 import com.muslim.qotouf.ui.screens.thumera.view_model.ThumeraViewModel
@@ -34,6 +36,7 @@ import com.muslim.qotouf.ui.screens.thumera.view_model.ThumeraViewModel
 fun AppNavHost(
     ThirdComposable: MutableState<@Composable (() -> Unit)?>,
     navController: NavHostController,
+    mainViewModel: MainViewModel,
     innerPadding: PaddingValues,
     isDarkTheme: Boolean,
     secondIcon: ImageVector,
@@ -41,7 +44,6 @@ fun AppNavHost(
     onFirstIconClick: MutableState<() -> Unit>,
     snackBarHost: SnackbarHostState,
     appBarTitle: MutableState<String>,
-    seetingBottomSheetState: MutableState<Boolean>,
 ) {
     val screenshotController = remember { ScreenshotController() }
     val viewModel: ThumeraViewModel = hiltViewModel()
@@ -56,7 +58,7 @@ fun AppNavHost(
             firstIcon.value = Icons.Default.Settings
             ThirdComposable.value = null
             onFirstIconClick.value = {
-                seetingBottomSheetState.value = true
+                navController.navigate(ScreenRoute.SettingRoute)
             }
 
             HomeScreen(
@@ -134,7 +136,14 @@ fun AppNavHost(
 
             val screenTitle = QuranSurah.getSurahName(ayah.chapter)
 
-            ScreenShootAction(onFirstIconClick, screenshotController, viewModel, ayah.verse,screenTitle,ThirdComposable)
+            ScreenShootAction(
+                onFirstIconClick,
+                screenshotController,
+                viewModel,
+                ayah.verse,
+                screenTitle,
+                ThirdComposable
+            )
             ThumeraScreen(
                 snackBarHost = snackBarHost,
                 ayah = ayah,
@@ -152,7 +161,14 @@ fun AppNavHost(
             firstIcon.value = Icons.Default.Share
             val id = ((System.currentTimeMillis() / 1000) % 1000000).toInt()
 
-            ScreenShootAction(onFirstIconClick, screenshotController, viewModel,id , "صحيح البخاري",ThirdComposable)
+            ScreenShootAction(
+                onFirstIconClick,
+                screenshotController,
+                viewModel,
+                id,
+                "صحيح البخاري",
+                ThirdComposable
+            )
 
             HadithScreen(
                 screenshotController = screenshotController,
@@ -164,13 +180,36 @@ fun AppNavHost(
             firstIcon.value = Icons.Default.Share
             val id = ((System.currentTimeMillis() / 1000) % 1000000).toInt()
 
-            ScreenShootAction(onFirstIconClick, screenshotController, viewModel, id,"الدعاء",ThirdComposable)
+            ScreenShootAction(
+                onFirstIconClick,
+                screenshotController,
+                viewModel,
+                id,
+                "الدعاء",
+                ThirdComposable
+            )
 
             DoaaScreen(
                 screenshotController = screenshotController,
                 innerPadding = innerPadding,
             )
         }
+
+        composable<ScreenRoute.SettingRoute> {
+
+            appBarTitle.value = "الإعدادت"
+
+            firstIcon.value = Icons.AutoMirrored.Filled.ArrowForward
+            ThirdComposable.value = null
+            onFirstIconClick.value = {
+                navController.popBackStack()
+            }
+            SettingScreen(
+                innerPadding = innerPadding,
+                viewModel = mainViewModel
+            )
+        }
+
 
     }
 }

@@ -16,7 +16,11 @@ private val DarkColorScheme = darkColorScheme(
     secondary = Color.White,
     surfaceContainer = PageBackgroundDark,
     onSecondary = TafsierTitleCardDark,
-    tertiary = Pink80
+
+    //slider
+    onSecondaryContainer = SliderActiveDarkColor,
+    onSurfaceVariant = SliderDisActiveDarkColor
+
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -25,7 +29,10 @@ private val LightColorScheme = lightColorScheme(
     onSecondary = TafsierTitleCardLight,
     surfaceContainer = PageBackgroundLight,
 
-    tertiary = Pink40
+
+    //slider
+    onSecondaryContainer = SliderActiveLightColor,
+    onSurfaceVariant = SliderDisActiveLightColor
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

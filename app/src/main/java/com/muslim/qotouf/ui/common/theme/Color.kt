@@ -17,3 +17,9 @@ val PageBackgroundDark = Color.Black
 
 val TafsierTitleCardDark = Color(0xFF0D3F3A)
 val TafsierTitleCardLight = Color(0xFFE3F7F4)
+
+
+val SliderActiveLightColor = Color(0xFF00A99A)
+val SliderActiveDarkColor = Color(0xFF33B5AA)
+val SliderDisActiveLightColor = Color(0xFFE0DDD8)
+val SliderDisActiveDarkColor = Color(0xFF2C2C2C)
