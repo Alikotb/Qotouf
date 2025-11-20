@@ -75,8 +75,8 @@ dependencies {
 
     //icons
     implementation ("androidx.compose.material:material-icons-extended:1.4.0")
-    //Hilt for compose-Navigation
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+//    //Hilt for compose-Navigation
+//    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //navigation
     val navVersion = "2.8.8"

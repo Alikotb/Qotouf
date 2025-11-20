@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.Qotouf" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
 
     </style>
