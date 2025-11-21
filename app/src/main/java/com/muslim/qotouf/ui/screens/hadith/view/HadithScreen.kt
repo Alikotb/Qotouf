@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.ui.common.component.LoadingSection
 import com.muslim.qotouf.ui.common.helper.captureComposable
 import com.muslim.qotouf.ui.common.helper.rememberScreenshotAnimation
@@ -38,6 +39,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun HadithScreen(
+    mainViewModel: MainViewModel,
     innerPadding: PaddingValues,
     screenshotController: ScreenshotController,
     viweModel: HadithViewModel = hiltViewModel()
@@ -48,6 +50,9 @@ fun HadithScreen(
     val loading by viweModel.loading.collectAsStateWithLifecycle()
     val (scale, triggerScreenshot) = rememberScreenshotAnimation()
     var flashVisible by remember { mutableStateOf(false) }
+
+    val textSize by mainViewModel.adkarTextSize.collectAsStateWithLifecycle()
+
 
 
     LaunchedEffect(Unit) {
@@ -74,13 +79,17 @@ fun HadithScreen(
                             flashVisible = true
                             triggerScreenshot()
                         }) {
-                    Spacer(Modifier.height(32.dp))
+                        Spacer(Modifier.height(32.dp))
                         HadithCard(
+                            textSize = textSize,
                             textContent = hadith?.text ?: ""
                         )
                         Spacer(Modifier.height(32.dp))
 
                     }
+                }
+                item {
+                    Spacer(Modifier.height(56.dp))
                 }
             } else {
                 item {
@@ -95,7 +104,7 @@ fun HadithScreen(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(16.dp)
-                .offset(y = (-36).dp, x = 16.dp),
+                .offset(y = (-16).dp, x = 12.dp),
             containerColor = colors.primary
         ) {
             Icon(

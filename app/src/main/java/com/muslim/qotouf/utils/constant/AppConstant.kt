@@ -20,5 +20,8 @@ object AppConstant {
     const val QURAN_CHANEL_ID = "quran_chanel_id"
     const val HADITH_CHANEL_ID = "hadith_chanel_id"
 
+    const val QURAN_TEXT_SIZE = "quran_text_size"
+    const val ADKAR_TEXT_SIZE = "adkar_text_size"
+
 
 }

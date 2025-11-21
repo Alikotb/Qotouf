@@ -21,7 +21,7 @@ import com.muslim.qotouf.R
 import com.muslim.qotouf.utils.extensions.normalizeArabic
 
 @Composable
-fun HadithCard(textContent: String) {
+fun HadithCard(textContent: String, textSize: Int) {
 
     val colors = MaterialTheme.colorScheme
 
@@ -39,13 +39,14 @@ fun HadithCard(textContent: String) {
             }
         }
     }
+    val lineHeight = (textSize * 1.5f).sp
 
     Text(
         text = highlightedText,
         style = TextStyle(
             fontFamily = FontFamily(Font(R.font.hafs)),
-            fontSize = 24.sp,
-            lineHeight = 45.sp,
+            fontSize = textSize.sp,
+            lineHeight = lineHeight,
             color = colors.secondary,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.SemiBold

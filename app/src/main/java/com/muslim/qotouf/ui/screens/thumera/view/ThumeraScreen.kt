@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.quraan.InTheNameOfAllah
@@ -45,6 +46,7 @@ import kotlinx.coroutines.delay
 fun ThumeraScreen(
     modifier: Modifier = Modifier,
     snackBarHost: SnackbarHostState,
+    mainViewModel: MainViewModel,
     ayah: Verse,
     innerPadding: PaddingValues,
     viewModel: ThumeraViewModel = hiltViewModel(),
@@ -55,6 +57,8 @@ fun ThumeraScreen(
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp.dp
     val colors = MaterialTheme.colorScheme
+    val textSize by mainViewModel.quranTextSize.collectAsStateWithLifecycle()
+
 
     val (scale, triggerScreenshot) = rememberScreenshotAnimation()
     var flashVisible by remember { mutableStateOf(false) }
@@ -106,6 +110,7 @@ fun ThumeraScreen(
                     InTheNameOfAllah()
                     Spacer(Modifier.height(12.dp))
                     CombinedAyatText(
+                        textSize = textSize,
                         ayahList = ayahList,
                         isDarkTheme = isDarkTheme
                     )

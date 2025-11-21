@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.screens.doaa.view
+package com.muslim.qotouf.ui.screens.setting.view.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -8,14 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,34 +35,41 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.R
-import com.muslim.qotouf.ui.common.component.LoadingSection
+import com.muslim.qotouf.ui.common.component.quraan.SurahTitleFrame
 import com.muslim.qotouf.ui.common.helper.captureComposable
 import com.muslim.qotouf.ui.common.helper.rememberScreenshotAnimation
 import com.muslim.qotouf.ui.screens.doaa.view_model.DoaaViewModel
 import com.muslim.qotouf.ui.screens.hadith.view.component.HadithCard
+import com.muslim.qotouf.ui.screens.hadith.view_model.HadithViewModel
+import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
 import com.muslim.qotouf.ui.screens.thumera.view_model.ScreenshotController
+import com.muslim.qotouf.utils.constant.AppConstant
 import kotlinx.coroutines.delay
 
 @Composable
-fun DoaaScreen(
-    mainViewModel: MainViewModel,
-    screenshotController: ScreenshotController,
+fun NotificationScreen(
+    message: String,
+    title: String,
+    type: String,
     innerPadding: PaddingValues,
-    viweModel: DoaaViewModel = hiltViewModel()
+    screenshotController: ScreenshotController,
+    mainViewModel: MainViewModel,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    hadithViewModel: HadithViewModel = hiltViewModel(),
+    doaaViewModel: DoaaViewModel = hiltViewModel()
 ) {
-//    AneesAlertDialog()
+
     val colors = MaterialTheme.colorScheme
-    val doaa by viweModel.curentDoaa.collectAsStateWithLifecycle()
-    val loading by viweModel.loading.collectAsStateWithLifecycle()
     val (scale, triggerScreenshot) = rememberScreenshotAnimation()
     var flashVisible by remember { mutableStateOf(false) }
 
-    val textSize by mainViewModel.adkarTextSize.collectAsStateWithLifecycle()
+    val quranTextSize by mainViewModel.quranTextSize.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viweModel.getDoaa()
+        homeViewModel.getCurentDayaQatf()
+        hadithViewModel.getRandomHadith()
+        doaaViewModel.getRandomDoaa()
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -78,75 +80,61 @@ fun DoaaScreen(
                 scaleY = scale
             ),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-                .padding(horizontal = 16.dp)
-                .height(50.dp)
-                .align(Alignment.TopCenter)
-                .clip(RoundedCornerShape(8.dp))
-                .background(colors.onSecondary),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                doaa?.category ?: "",
-                textAlign = TextAlign.Center,
-                color = colors.secondary,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.othmani)),
-                    fontSize = 24.sp,
-                    lineHeight = 45.sp,
-                    color = colors.secondary,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.SemiBold
-                ),
-            )
-        }
-        LazyColumn {
-            if (!loading) {
+        Column {
+            when (type) {
+                AppConstant.QURAN_CHANEL_ID -> {
+                    Spacer(Modifier.height(24.dp))
+                    SurahTitleFrame(surahTitle = title)
+                }
+
+                else -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .padding(horizontal = 16.dp)
+                            .height(50.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(colors.onSecondary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            if (type == AppConstant.DOAA_CHANEL_ID) title else "من صحيــح البخــاري",
+                            textAlign = TextAlign.Center,
+                            color = colors.secondary,
+                            style = TextStyle(
+                                fontFamily = FontFamily(Font(R.font.othmani)),
+                                fontSize = 24.sp,
+                                lineHeight = 45.sp,
+                                color = colors.secondary,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                        )
+                    }
+                    Spacer(Modifier.height(16.dp))
+                }
+
+            }
+
+            LazyColumn {
+
                 item {
-                    Spacer(Modifier.height(70.dp))
                     Column(
                         Modifier.captureComposable(screenshotController) {
                             flashVisible = true
                             triggerScreenshot()
                         }) {
                         Spacer(Modifier.height(32.dp))
-                        doaa?.duaa?.forEach {
-                            HadithCard(
-                                textSize = textSize,
-                                textContent = it
-                            )
-                            Spacer(Modifier.height(16.dp))
-                        }
+                        HadithCard(
+                            textSize = quranTextSize,
+                            textContent = message
+                        )
                         Spacer(Modifier.height(32.dp))
                     }
                 }
-                item{
-                    Spacer(Modifier.height(56.dp))
-                }
-            } else {
-                item {
-                    LoadingSection()
-                }
+
             }
-        }
-        FloatingActionButton(
-            onClick = {
-                viweModel.getRandomDoaa()
-            },
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(16.dp)
-                .offset(y = (-16).dp, x = 12.dp),
-            containerColor = colors.primary
-        ) {
-            Icon(
-                imageVector = Icons.Default.Repeat,
-                contentDescription = null,
-                tint = Color.White
-            )
         }
         if (flashVisible) {
             Box(
@@ -161,5 +149,6 @@ fun DoaaScreen(
             }
         }
     }
-}
 
+
+}

@@ -32,9 +32,83 @@ class MainViewModel @Inject constructor(
     private val _hadithFlag = MutableStateFlow(false)
     val hadithFlag = _hadithFlag.asStateFlow()
 
+
+    //fontSize
+    private val _quranTextSize = MutableStateFlow(0)
+    val quranTextSize = _quranTextSize.asStateFlow()
+
+    private val _adkarTextSize = MutableStateFlow(0)
+    val adkarTextSize = _adkarTextSize.asStateFlow()
+
+
+
     init {
         getDarkModeFalag()
         getPermissionFlag()
+        collectSettings()
+    }
+
+    private fun collectSettings() {
+        viewModelScope.launch {
+            repo.getData(AppConstant.IS_DARK_MODE, false).collect {
+                _isDark.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            repo.getData(AppConstant.IS_FIRST_TIME_PERMISSION, true).collect {
+                _permissionFlag.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            repo.getData(AppConstant.QURAN_NOTIFICATION_FLAG, false).collect {
+                _quranFlag.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            repo.getData(AppConstant.HADITH_NOTIFICATION_FLAG, false).collect {
+                _hadithFlag.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            repo.getData(AppConstant.DOAA_NOTIFICATION_FLAG, false).collect {
+                _doaaFlag.value = it
+            }
+        }
+
+        //font size
+        viewModelScope.launch {
+            repo.getData(AppConstant.QURAN_TEXT_SIZE, 22).collect {
+                _quranTextSize.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            repo.getData(AppConstant.ADKAR_TEXT_SIZE, 22).collect {
+                _adkarTextSize.value = it
+            }
+        }
+    }
+
+    fun savQuranSettingFlag(value: Boolean) {
+        viewModelScope.launch {
+            repo.saveData(AppConstant.QURAN_NOTIFICATION_FLAG, value)
+        }
+    }
+
+    fun savHadithSettingFlag(value: Boolean) {
+        viewModelScope.launch {
+            repo.saveData(AppConstant.HADITH_NOTIFICATION_FLAG, value)
+        }
+    }
+
+    fun savDoaaSettingFlag(value: Boolean) {
+        viewModelScope.launch {
+            repo.saveData(AppConstant.DOAA_NOTIFICATION_FLAG, value)
+        }
     }
 
     //dark&Light mode
@@ -67,48 +141,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    //quran notification
-    fun getQuranSettingFlag() {
+    fun savQuranTextSize(value: Int) {
         viewModelScope.launch {
-            repo.getData(AppConstant.QURAN_NOTIFICATION_FLAG, false).collect {
-                _quranFlag.value = it
-            }
+            repo.saveData(AppConstant.QURAN_TEXT_SIZE, value)
         }
     }
 
-    fun savQuranSettingFlag(pemission: Boolean) {
+    fun savAdkarTextSize(value: Int) {
         viewModelScope.launch {
-            repo.saveData(AppConstant.QURAN_NOTIFICATION_FLAG, pemission)
+            repo.saveData(AppConstant.ADKAR_TEXT_SIZE, value)
         }
     }
 
-    //hadith notification
-    fun getHadithSettingFlag() {
-        viewModelScope.launch {
-            repo.getData(AppConstant.HADITH_NOTIFICATION_FLAG, false).collect {
-                _hadithFlag.value = it
-            }
-        }
-    }
-
-    fun savHadithSettingFlag(pemission: Boolean) {
-        viewModelScope.launch {
-            repo.saveData(AppConstant.HADITH_NOTIFICATION_FLAG, pemission)
-        }
-    }
-
-    //doaa notification
-    fun getDoaaSettingFlag() {
-        viewModelScope.launch {
-            repo.getData(AppConstant.DOAA_NOTIFICATION_FLAG, false).collect {
-                _doaaFlag.value = it
-            }
-        }
-    }
-
-    fun savDoaaSettingFlag(pemission: Boolean) {
-        viewModelScope.launch {
-            repo.saveData(AppConstant.DOAA_NOTIFICATION_FLAG, pemission)
-        }
-    }
 }

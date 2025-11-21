@@ -11,7 +11,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.muslim.qotouf.utils.constant.AppConstant
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -90,5 +92,14 @@ class DataStoreImpl @Inject constructor(
         }
 
     }
+    fun getBooleanSync(key: String, default: Boolean = false): Boolean = runBlocking {
+        try {
+            val preferencesKey = booleanPreferencesKey(key)
+            dataStore.data.first()[preferencesKey] ?: default
+        } catch (e: Exception) {
+            default
+        }
+    }
+
 
 }

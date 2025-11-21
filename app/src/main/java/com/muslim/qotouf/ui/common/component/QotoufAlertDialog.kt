@@ -11,84 +11,78 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun QotoufAlertDialog(
-    title: String="الاشعارات",
-    message: String="نطلب الاذن بارسال الاشعارت من هذا التطبيق",
-    onConfirmLabel: String="سماح",
+    title: String = "الاشعارات",
+    message: String = "نطلب الاذن بارسال الاشعارت من هذا التطبيق",
+    onConfirmLabel: String = "سماح",
     onDismissLabel: String = "تخطي",
-    onConfirm: () -> Unit={},
-    onDismiss: () -> Unit={}
+    onConfirm: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
 
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            shape = RoundedCornerShape(20.dp),
-            containerColor = Color(0xFFFFF8F2),
-            title = {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color =  Color(0xFF009788)
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            text = {
-                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(20.dp),
+        containerColor = Color(0xFFFFF8F2),
+        title = {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF009788)
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        text = {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color(0xFF6F3A18),
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 20.sp
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+            )
 
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color(0xFF6F3A18),
-                            fontWeight = FontWeight.Bold,
-                            lineHeight = 20.sp
-                        ),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp)
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = onConfirm,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor =  Color(0xFF009788),
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                ) {
-                    Text(onConfirmLabel)
-                }
-            },
-            dismissButton = {
-                OutlinedButton(
-                    onClick = onDismiss,
-                    border = BorderStroke(1.dp,  Color(0xFF009788)),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                ) {
-                    Text(onDismissLabel, color = Color(0xFF6F3A18))
-                }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF009788),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+            ) {
+                Text(onConfirmLabel)
             }
-        )
-    }
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = onDismiss,
+                border = BorderStroke(1.dp, Color(0xFF009788)),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+            ) {
+                Text(onDismissLabel, color = Color(0xFF6F3A18))
+            }
+        }
+    )
+
 }

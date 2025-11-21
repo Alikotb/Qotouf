@@ -17,4 +17,8 @@ sealed class ScreenRoute {
     object DoaaRoute : ScreenRoute()
     @Serializable
     object SettingRoute : ScreenRoute()
+
+
+    @Serializable
+    data class NotificationRoute(val message: String, val title: String, val notifyType: String) : ScreenRoute()
 }

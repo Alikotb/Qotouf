@@ -1,7 +1,8 @@
-package com.muslim.qotouf.ui.screens.setting.view
+package com.muslim.qotouf.ui.screens.setting.view.screen
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -23,19 +24,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.MainViewModel
+import com.muslim.qotouf.data.model.DoaaDtoItem
+import com.muslim.qotouf.data.model.HadithDtosItem
+import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.AppPermission
 import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.permission.rememberPermissionRequestHandler
 import com.muslim.qotouf.ui.screens.doaa.view_model.DoaaViewModel
 import com.muslim.qotouf.ui.screens.hadith.view_model.HadithViewModel
 import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
-import com.muslim.qotouf.ui.screens.setting.view.component.setting.CustomSlider
-import com.muslim.qotouf.ui.screens.setting.view.component.setting.SettingSubCard
+import com.muslim.qotouf.ui.screens.setting.view.component.SettingNotificationCard
+import com.muslim.qotouf.ui.screens.setting.view.component.SettingTextSizeCard
 import com.muslim.qotouf.utils.constant.AppConstant
 import com.muslim.qotouf.worker.setNotification
 
@@ -55,7 +56,6 @@ fun SettingScreen(
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp.dp
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     //setting states
     val quranState = viewModel.quranFlag.collectAsStateWithLifecycle()
     val hadithState = viewModel.hadithFlag.collectAsStateWithLifecycle()
@@ -70,34 +70,123 @@ fun SettingScreen(
     //doaa state
     val doaaNotificationData by doaaViewModel.curentDoaa.collectAsStateWithLifecycle()
 
+
+    //font size
+    val quranTextSize by viewModel.quranTextSize.collectAsStateWithLifecycle()
+    val adkarTextSize by viewModel.adkarTextSize.collectAsStateWithLifecycle()
+
+
     LaunchedEffect(Unit) {
-        lifecycleOwner.lifecycle.addObserver(
-            object : DefaultLifecycleObserver {
-                override fun onResume(owner: LifecycleOwner) {
-                    super.onResume(owner)
-
-                    if (!quranState.value &&
-                        AppPermission.Notification.isGranted(context)
-                    ) {
-                        viewModel.savQuranSettingFlag(true)
-                    }
-
-                    if (!hadithState.value &&
-                        AppPermission.Notification.isGranted(context)
-                    ) {
-                        viewModel.savHadithSettingFlag(true)
-                    }
-
-                    if (!doaaState.value &&
-                        AppPermission.Notification.isGranted(context)
-                    ) {
-                        viewModel.savDoaaSettingFlag(true)
-                    }
-                }
-            }
-        )
+        homeViewModel.getCurentDayaQatf()
+        hadithViewModel.getRandomHadith()
+        doaaViewModel.getRandomDoaa()
     }
 
+    val (qurannotificationPermissionHandler, hadithNotificationPermissionHandler, doaaNotificationPermissionHandler) = triple(
+        context,
+        curentAyahNotificationData,
+        viewModel,
+        hadithNotificationData,
+        doaaNotificationData,
+    )
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(colors.surfaceContainer),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        item {
+            Spacer(Modifier.height(screenHeight * 0.02f))
+            Text(
+                text = "إعدادت الأشعار",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = colors.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            )
+        }
+        item {
+            SettingNotificationCard(
+                onClick = {
+                    if (!quranState.value) {
+                        qurannotificationPermissionHandler()
+                    } else {
+                        viewModel.savQuranSettingFlag(false)
+                    }
+                },
+                isEnabled = quranState.value
+            )
+            SettingNotificationCard(
+                title = "إشعارات الحديث",
+                onClick = {
+                    if (!hadithState.value) {
+                        hadithNotificationPermissionHandler()
+                    } else {
+                        viewModel.savHadithSettingFlag(false)
+                    }
+                },
+                isEnabled = hadithState.value
+            )
+            SettingNotificationCard(
+                title = "إشعارات الدعاء",
+                onClick = {
+                    if (!doaaState.value) {
+                        doaaNotificationPermissionHandler()
+                    } else {
+                        viewModel.savDoaaSettingFlag(false)
+                    }
+                },
+                isEnabled = doaaState.value
+            )
+        }
+        item{
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "تخصيــص الخطــوط",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = colors.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            )
+        }
+        item {
+            SettingTextSizeCard(
+                textSize = quranTextSize
+            ){
+                viewModel.savQuranTextSize(it)
+            }
+        }
+        item {
+            SettingTextSizeCard(
+                title = "حجم الدعاء والحديث",
+                example =  "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
+                textSize = adkarTextSize
+            ){
+                viewModel.savAdkarTextSize(it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun triple(
+    context: Context,
+    curentAyahNotificationData: List<Verse>,
+    viewModel: MainViewModel,
+    hadithNotificationData: HadithDtosItem?,
+    doaaNotificationData: DoaaDtoItem?,
+): Triple<() -> Unit, () -> Unit, () -> Unit> {
     val qurannotificationPermissionHandler = rememberPermissionRequestHandler(
         permission = Manifest.permission.POST_NOTIFICATIONS,
         title = AppPermission.Notification.title,
@@ -105,16 +194,20 @@ fun SettingScreen(
         rationaleTitle = "إذن الإشعارات مطلوب",
         rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
         onGranted = {
+            viewModel.savQuranSettingFlag(true)
             setNotification(
                 ctx = context,
-                interval = 8,
                 title = QuranSurah.getSurahName(curentAyahNotificationData.first().chapter),
-                message = curentAyahNotificationData.joinToString(separator = "\n"),
+                message = "بســم الله الرحمـن الرحيــم \n${
+                    curentAyahNotificationData
+                        .map { it.text }
+                        .joinToString(separator = " * ")
+                }",
                 notificationId = 1000,
                 channelId = AppConstant.QURAN_CHANEL_ID,
-                isEnable = quranState.value,
+                interval = 8L,
+                isEnable = true
             )
-            viewModel.savQuranSettingFlag(true)
         },
         onDeclined = {
             viewModel.savQuranSettingFlag(false)
@@ -130,16 +223,17 @@ fun SettingScreen(
         rationaleTitle = "إذن الإشعارات مطلوب",
         rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
         onGranted = {
+            viewModel.savHadithSettingFlag(true)
             setNotification(
                 ctx = context,
-                interval = 8,
                 title = "من صحيح البخاري",
-                message = hadithNotificationData?.text?:"عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وآله وسلم قال: (( كل أمتي يدخلون الجنة إلا من أبى)) قالوا : يا رسول الله: ومن يأبى؟! قال: ((من أطاعني دخل الجنة، ومن عصاني فقد أبى))\n",
+                message = hadithNotificationData?.text
+                    ?: "عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وآله وسلم قال: (( كل أمتي يدخلون الجنة إلا من أبى)) قالوا : يا رسول الله: ومن يأبى؟! قال: ((من أطاعني دخل الجنة، ومن عصاني فقد أبى))\n",
                 notificationId = 1001,
                 channelId = AppConstant.HADITH_CHANEL_ID,
-                isEnable = hadithState.value,
+                interval = 8L,
+                isEnable = true
             )
-            viewModel.savHadithSettingFlag(true)
         },
         onDeclined = {
             viewModel.savHadithSettingFlag(false)
@@ -156,87 +250,25 @@ fun SettingScreen(
             rationaleTitle = "إذن الإشعارات مطلوب",
             rationaleMessage = "تم رفض إذن الإشعارات مسبقًا. الرجاء تفعيله يدويًا من إعدادات التطبيق.",
             onGranted = {
+                viewModel.savDoaaSettingFlag(true)
                 setNotification(
                     ctx = context,
-                    interval = 6,
                     title = doaaNotificationData?.category ?: "سؤال الله الصبر",
                     message = doaaNotificationData?.duaa?.joinToString(separator = "\n")
                         ?: "ربنا ولا تحملنا ما لا طاقة لنا به",
                     notificationId = 1002,
                     channelId = AppConstant.DOAA_CHANEL_ID,
-                    isEnable = doaaState.value,
+                    interval = 6L,
+                    isEnable = true
                 )
-                viewModel.savDoaaSettingFlag(true)
             },
             onDeclined = {
                 viewModel.savDoaaSettingFlag(false)
             },
             permissionToBeChecked = AppPermission.Notification
         )
-
-
-    LaunchedEffect(quranState, hadithState, doaaState) {
-        viewModel.getDoaaSettingFlag()
-        viewModel.getHadithSettingFlag()
-        viewModel.getQuranSettingFlag()
-    }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .background(colors.surfaceContainer),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        item {
-            Spacer(Modifier.height(screenHeight * 0.02f))
-            Text(
-            text = "إعدادت الأشعار",
-            style = MaterialTheme.typography.titleLarge.copy(
-                color = colors.primary,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
-        )
-        }
-        item {
-            SettingSubCard(
-                onClick = {
-                    if (!quranState.value) {
-                        qurannotificationPermissionHandler()
-                    } else {
-                        viewModel.savQuranSettingFlag(false)
-                    }
-                    //viewModel.savQuranSettingFlag(!quranState.value)
-                },
-                isEnabled = quranState.value
-            )
-            SettingSubCard(
-                title = "إشعارات الحديث",
-                onClick = {
-                    if (!hadithState.value) {
-                        hadithNotificationPermissionHandler()
-                    } else {
-                        viewModel.savHadithSettingFlag(false)
-                    }
-                },
-                isEnabled = hadithState.value
-            )
-            SettingSubCard(
-                title = "إشعارات الدعاء",
-                onClick = {
-                    if (!doaaState.value) {
-                        doaaNotificationPermissionHandler()
-                    } else {
-                        viewModel.savDoaaSettingFlag(false)
-                    }
-                },
-                isEnabled = doaaState.value
-            )
-        }
-        item {
-            CustomSlider()
-        }
-    }
+    return Triple(
+        qurannotificationPermissionHandler,
+        hadithNotificationPermissionHandler, doaaNotificationPermissionHandler
+    )
 }

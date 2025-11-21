@@ -28,7 +28,7 @@ import com.muslim.qotouf.utils.extensions.normalizeArabic
 
 
 @Composable
-fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: Boolean) {
+fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: Boolean, textSize: Int) {
 
     val colors = MaterialTheme.colorScheme
     val inlineContentMap = mutableMapOf<String, InlineTextContent>()
@@ -70,13 +70,14 @@ fun CombinedAyatText(ayahList: List<Verse>, isDarkTheme: Boolean) {
         }
     }
 
+    val lineHeight = (textSize * 1.5f).sp
 
     Text(
         text = text,
         style = TextStyle(
             fontFamily = FontFamily(Font(R.font.hafs)),
-            fontSize = 22.sp,
-            lineHeight = 36.sp,
+            fontSize = textSize.sp,
+            lineHeight = lineHeight,
             color = colors.secondary,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.SemiBold

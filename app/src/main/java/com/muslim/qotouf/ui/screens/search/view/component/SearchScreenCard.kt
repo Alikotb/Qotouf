@@ -25,11 +25,13 @@ import com.muslim.qotouf.ui.screens.home.view.component.CombinedAyatText
 
 @Composable
 fun SearchScreenCard(
+    textSize: Int,
     ayah: Verse,
     isDarkTheme: Boolean,
     onClick: (String, Int, Int) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,6 +48,7 @@ fun SearchScreenCard(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             CombinedAyatText(
+                textSize = textSize,
                 ayahList = listOf(ayah),
                 isDarkTheme = isDarkTheme
             )

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.ui.common.component.LoadingSection
 import com.muslim.qotouf.ui.common.component.MySearchBar
 import com.muslim.qotouf.ui.screens.search.view.component.SearchScreenCard
@@ -29,12 +30,14 @@ fun SearchScreen(
     innerPadding: PaddingValues,
     snackBarHost: SnackbarHostState,
     viewModel: SearchViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel,
     isDarkTheme: Boolean,
     onAyahClick: (String, Int, Int) -> Unit,
 ) {
 
     val list by viewModel.versesList.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val textSize by mainViewModel.quranTextSize.collectAsStateWithLifecycle()
 
     val colors = MaterialTheme.colorScheme
 
@@ -55,7 +58,7 @@ fun SearchScreen(
                     items = list,
                     key = { it.text }
                 ) { ayah ->
-                    SearchScreenCard(ayah = ayah, isDarkTheme = isDarkTheme ){ a, b, c->
+                    SearchScreenCard(textSize = textSize, ayah = ayah, isDarkTheme = isDarkTheme ){ a, b, c->
                         onAyahClick(a, b, c)
                     }
                     Spacer(Modifier.height(12.dp))

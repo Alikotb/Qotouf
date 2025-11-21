@@ -26,10 +26,12 @@ import com.muslim.qotouf.ui.screens.home.view.scrrens.CurentDayTafsirScreen
 import com.muslim.qotouf.ui.screens.home.view.scrrens.HomeScreen
 import com.muslim.qotouf.ui.screens.search.view.SearchScreen
 import com.muslim.qotouf.ui.screens.search.view.component.SearchThirdAppBarIcon
-import com.muslim.qotouf.ui.screens.setting.view.SettingScreen
+import com.muslim.qotouf.ui.screens.setting.view.screen.NotificationScreen
+import com.muslim.qotouf.ui.screens.setting.view.screen.SettingScreen
 import com.muslim.qotouf.ui.screens.thumera.view.ThumeraScreen
 import com.muslim.qotouf.ui.screens.thumera.view_model.ScreenshotController
 import com.muslim.qotouf.ui.screens.thumera.view_model.ThumeraViewModel
+import com.muslim.qotouf.utils.constant.AppConstant
 
 
 @Composable
@@ -44,14 +46,32 @@ fun AppNavHost(
     onFirstIconClick: MutableState<() -> Unit>,
     snackBarHost: SnackbarHostState,
     appBarTitle: MutableState<String>,
+    notifyType: String?,
+    notifyTitle: String?,
+    notifyMessage: String?,
 ) {
     val screenshotController = remember { ScreenshotController() }
     val viewModel: ThumeraViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
-        startDestination = ScreenRoute.HomeRoute
-    ) {
+        startDestination =
+            if (notifyType != null && notifyType in listOf(
+                    AppConstant.QURAN_CHANEL_ID,
+                    AppConstant.HADITH_CHANEL_ID,
+                    AppConstant.DOAA_CHANEL_ID
+                )
+            ) {
+                ScreenRoute.NotificationRoute(
+                    message = notifyMessage ?: "",
+                    title = notifyTitle ?: "",
+                    notifyType = notifyType
+                )
+            } else {
+                ScreenRoute.HomeRoute
+            }
+    )
+    {
 
         composable<ScreenRoute.HomeRoute> {
             appBarTitle.value = "قـطــــوف"
@@ -62,6 +82,7 @@ fun AppNavHost(
             }
 
             HomeScreen(
+                mainViewModel = mainViewModel,
                 innerPadding = innerPadding,
                 onSearchClick = {
                     navController.navigate(ScreenRoute.SearchRoute)
@@ -110,6 +131,7 @@ fun AppNavHost(
             }
 
             SearchScreen(
+                mainViewModel = mainViewModel,
                 snackBarHost = snackBarHost,
                 innerPadding = innerPadding,
                 isDarkTheme = isDarkTheme,
@@ -145,6 +167,7 @@ fun AppNavHost(
                 ThirdComposable
             )
             ThumeraScreen(
+                mainViewModel = mainViewModel,
                 snackBarHost = snackBarHost,
                 ayah = ayah,
                 innerPadding = innerPadding,
@@ -171,6 +194,7 @@ fun AppNavHost(
             )
 
             HadithScreen(
+                mainViewModel = mainViewModel,
                 screenshotController = screenshotController,
                 innerPadding = innerPadding,
             )
@@ -190,6 +214,7 @@ fun AppNavHost(
             )
 
             DoaaScreen(
+                mainViewModel = mainViewModel,
                 screenshotController = screenshotController,
                 innerPadding = innerPadding,
             )
@@ -211,6 +236,29 @@ fun AppNavHost(
         }
 
 
+        composable<ScreenRoute.NotificationRoute> {
+            appBarTitle.value = "تدبــــــر"
+            firstIcon.value = Icons.Default.Share
+            val id = ((System.currentTimeMillis() / 1000) % 1000000).toInt()
+
+            ScreenShootAction(
+                onFirstIconClick,
+                screenshotController,
+                viewModel,
+                id,
+                "الدعاء",
+                ThirdComposable
+            )
+
+            NotificationScreen(
+                mainViewModel = mainViewModel,
+                screenshotController = screenshotController,
+                innerPadding = innerPadding,
+                message = notifyMessage ?: "",
+                title = notifyTitle ?: "",
+                type = notifyType ?: AppConstant.DOAA_CHANEL_ID,
+            )
+        }
     }
 }
 

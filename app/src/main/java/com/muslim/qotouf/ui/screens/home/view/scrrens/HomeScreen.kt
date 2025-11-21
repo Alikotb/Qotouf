@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.muslim.qotouf.MainViewModel
 import com.muslim.qotouf.ui.common.component.LoadingSection
 import com.muslim.qotouf.ui.common.component.ShowTafsierComponent
 import com.muslim.qotouf.ui.common.component.quraan.InTheNameOfAllah
@@ -30,6 +32,7 @@ import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
 @Composable
 fun HomeScreen(
     innerPadding: PaddingValues,
+    mainViewModel: MainViewModel,
     viewModel: HomeViewModel = hiltViewModel(),
     onSearchClick: () -> Unit,
     onHadithClick: () -> Unit,
@@ -43,6 +46,7 @@ fun HomeScreen(
     val isLoading by viewModel.loading.collectAsState()
 
     val colors = MaterialTheme.colorScheme
+    val textSize by mainViewModel.quranTextSize.collectAsStateWithLifecycle()
 
     LazyColumn(
         modifier = Modifier
@@ -62,7 +66,11 @@ fun HomeScreen(
             }
             item {
                 Box {
-                    CombinedAyatText(ayahList, isDarkTheme)
+                    CombinedAyatText(
+                       ayahList =  ayahList,
+                        textSize = textSize,
+                        isDarkTheme = isDarkTheme
+                    )
                 }
             }
             item {

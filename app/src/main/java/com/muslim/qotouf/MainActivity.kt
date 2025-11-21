@@ -1,5 +1,6 @@
 package com.muslim.qotouf
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,22 +41,25 @@ class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    val notifyType = intent.getStringExtra("notify_type")
+    val notifyTitle = intent.getStringExtra("notify_title")
+    val notifyMessage = intent.getStringExtra("notify_message")
         enableEdgeToEdge()
         setContent {
             viewModel = hiltViewModel()
             viewModel.getDarkModeFalag()
             val isDark = viewModel.isDark.collectAsStateWithLifecycle(initialValue = false)
+            val isFirstTime = viewModel.permissionFlag.collectAsStateWithLifecycle(initialValue = true)
 
             val firstAppBarIcon = remember { mutableStateOf(Icons.Default.Settings) }
             val secondAppBarIcon = if (isDark.value) Icons.Default.DarkMode else Icons.Default.LightMode
-
             val thirdAppBarComposable = remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
             val firstLambda = remember { mutableStateOf({}) }
             val appBarTitle = remember { mutableStateOf("قـطــــوف") }
             val systemUiController = rememberSystemUiController()
-            val isFirstTime = viewModel.permissionFlag.collectAsStateWithLifecycle(initialValue = true)
 
             navController = rememberNavController()
             snackBarHost = remember { SnackbarHostState() }
@@ -109,7 +113,12 @@ class MainActivity : ComponentActivity() {
                             innerPadding = innerPadding,
                             navController = navController,
                             mainViewModel = viewModel,
-                            isDarkTheme = isDark.value
+                            isDarkTheme = isDark.value,
+
+
+                            notifyType = notifyType,
+                            notifyTitle = notifyTitle,
+                            notifyMessage = notifyMessage
                         )
                     }
 

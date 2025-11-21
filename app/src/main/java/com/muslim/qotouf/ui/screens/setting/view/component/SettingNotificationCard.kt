@@ -1,4 +1,4 @@
-package com.muslim.qotouf.ui.screens.setting.view.component.setting
+package com.muslim.qotouf.ui.screens.setting.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.muslim.qotouf.R
 
 @Composable
-fun SettingSubCard(
+fun SettingNotificationCard(
     modifier: Modifier = Modifier,
     isEnabled: Boolean ,
     title: String = "إشعارات القراءن",
