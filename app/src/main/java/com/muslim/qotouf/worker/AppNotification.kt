@@ -40,7 +40,7 @@ fun setNotification(
     )
 
     val request = PeriodicWorkRequestBuilder<MyPeriodicWorker>(
-        interval, TimeUnit.HOURS
+        interval, TimeUnit.MINUTES
     )
         .setInputData(data)
         .build()
