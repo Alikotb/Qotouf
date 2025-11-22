@@ -39,7 +39,7 @@ fun HadithCard(textContent: String, textSize: Int) {
             }
         }
     }
-    val lineHeight = (textSize * 1.5f).sp
+    val lineHeight = (textSize * 1.7f).sp
 
     Text(
         text = highlightedText,
