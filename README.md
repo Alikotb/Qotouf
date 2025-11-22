@@ -6,7 +6,7 @@
 ## 📲 Install & Try It
 
 You can install the app on your device and try it out yourself:  
-👉 **[Install Qotouf](https://github.com/Alikotb/Qotouf/releases)**
+👉 **[Install Qotouf](https://github.com/Alikotb/Qotouf/releases/download/qotouf/qotouf.apk)**
 
 ## 🌐 Features
 
