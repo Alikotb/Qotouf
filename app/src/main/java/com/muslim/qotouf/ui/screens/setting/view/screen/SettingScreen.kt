@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,19 +22,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.MainViewModel
-import com.muslim.qotouf.MyApp
-import com.muslim.qotouf.data.model.DoaaDtoItem
-import com.muslim.qotouf.data.model.HadithDtosItem
-import com.muslim.qotouf.data.model.Verse
 import com.muslim.qotouf.enum.AppPermission
-import com.muslim.qotouf.enum.QuranSurah
 import com.muslim.qotouf.ui.common.component.permission.rememberPermissionRequestHandler
-import com.muslim.qotouf.ui.screens.doaa.view_model.DoaaViewModel
-import com.muslim.qotouf.ui.screens.hadith.view_model.HadithViewModel
-import com.muslim.qotouf.ui.screens.home.view_model.HomeViewModel
 import com.muslim.qotouf.ui.screens.setting.view.component.SettingNotificationCard
 import com.muslim.qotouf.ui.screens.setting.view.component.SettingTextSizeCard
 import com.muslim.qotouf.utils.constant.AppConstant
@@ -47,9 +37,6 @@ import com.muslim.qotouf.worker.setNotification
 fun SettingScreen(
     innerPadding: PaddingValues,
     viewModel: MainViewModel,
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    hadithViewModel: HadithViewModel = hiltViewModel(),
-    doaaViewModel: DoaaViewModel = hiltViewModel()
 ) {
 
     //compose configuration
@@ -62,33 +49,15 @@ fun SettingScreen(
     val hadithState = viewModel.hadithFlag.collectAsStateWithLifecycle()
     val doaaState = viewModel.doaaFlag.collectAsStateWithLifecycle()
 
-    //home state
-    val curentAyahNotificationData by homeViewModel.curentDayAyah.collectAsStateWithLifecycle()
-
-    //hadith state
-    val hadithNotificationData by hadithViewModel.curentHadith.collectAsStateWithLifecycle()
-
-    //doaa state
-    val doaaNotificationData by doaaViewModel.curentDoaa.collectAsStateWithLifecycle()
 
 
     //font size
     val quranTextSize by viewModel.quranTextSize.collectAsStateWithLifecycle()
     val adkarTextSize by viewModel.adkarTextSize.collectAsStateWithLifecycle()
 
-
-    LaunchedEffect(Unit) {
-        homeViewModel.getCurentDayaQatf()
-        hadithViewModel.getRandomHadith()
-        doaaViewModel.getRandomDoaa()
-    }
-
     val (qurannotificationPermissionHandler, hadithNotificationPermissionHandler, doaaNotificationPermissionHandler) = triple(
         context,
-        curentAyahNotificationData,
         viewModel,
-        hadithNotificationData,
-        doaaNotificationData,
     )
 
     LazyColumn(
@@ -183,10 +152,7 @@ fun SettingScreen(
 @Composable
 private fun triple(
     context: Context,
-    curentAyahNotificationData: List<Verse>,
     viewModel: MainViewModel,
-    hadithNotificationData: HadithDtosItem?,
-    doaaNotificationData: DoaaDtoItem?,
 ): Triple<() -> Unit, () -> Unit, () -> Unit> {
     val qurannotificationPermissionHandler = rememberPermissionRequestHandler(
         permission = Manifest.permission.POST_NOTIFICATIONS,
@@ -198,12 +164,6 @@ private fun triple(
             viewModel.savQuranSettingFlag(true)
             setNotification(
                 ctx = context,
-                title = QuranSurah.getSurahName(curentAyahNotificationData.first().chapter),
-                message = "بســم الله الرحمـن الرحيــم \n${
-                    curentAyahNotificationData
-                        .map { it.text }
-                        .joinToString(separator = " * ")
-                }",
                 notificationId = 1000,
                 channelId = AppConstant.QURAN_CHANEL_ID,
                 interval = 8L,
@@ -227,8 +187,6 @@ private fun triple(
             viewModel.savHadithSettingFlag(true)
             setNotification(
                 ctx = context,
-                title = "من صحيح البخاري",
-                message = MyApp.allHadith.random().text,
                 notificationId = 1001,
                 channelId = AppConstant.HADITH_CHANEL_ID,
                 interval = 8L,
@@ -253,8 +211,6 @@ private fun triple(
                 viewModel.savDoaaSettingFlag(true)
                 setNotification(
                     ctx = context,
-                    title = doaaNotificationData?.category ?: "سؤال الله الصبر",
-                    message = MyApp.allDoaa.random().duaa.joinToString(separator = "\n"),
                     notificationId = 1002,
                     channelId = AppConstant.DOAA_CHANEL_ID,
                     interval = 6L,

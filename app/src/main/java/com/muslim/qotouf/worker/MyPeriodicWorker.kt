@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.local.data_store.DataStoreImpl
 import com.muslim.qotouf.utils.constant.AppConstant
+import com.muslim.qotouf.utils.quran_parser.getRandomQuraanAyat
 
 class MyPeriodicWorker(
     context: Context,
@@ -17,8 +18,6 @@ class MyPeriodicWorker(
     override fun doWork(): Result {
 
 
-        val title = inputData.getString("title") ?: "قطــــوف"
-        val message = inputData.getString("message") ?: ""
         val notificationId = inputData.getInt("notificationId", 0)
         val channelId = inputData.getString("channelId") ?: "GENERAL"
 
@@ -59,17 +58,18 @@ class MyPeriodicWorker(
             AppConstant.HADITH_CHANEL_ID -> {
                 showNotification(
                     applicationContext,
-                    title,
+                    "من صحيـح البخـاري",
                     MyApp.allHadith.random().text,
                     notificationId,
                     channelId
                 )
             }
             else -> {
+                val ayah =  getRandomQuraanAyat()
                 showNotification(
                     applicationContext,
-                    title,
-                    message,
+                    ayah.second,
+                    "بسـم اللـه الرحمـن الرحيـم\n"+ayah.first,
                     notificationId,
                     channelId
                 )

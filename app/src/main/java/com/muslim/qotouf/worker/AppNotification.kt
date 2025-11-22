@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit
 
 fun setNotification(
     ctx: Context,
-    title: String,
-    message: String,
     notificationId: Int,
     channelId: String,
     interval: Long,
@@ -33,14 +31,12 @@ fun setNotification(
     }
 
     val data = workDataOf(
-        "title" to title,
-        "message" to message,
         "notificationId" to notificationId,
         "channelId" to channelId
     )
 
     val request = PeriodicWorkRequestBuilder<MyPeriodicWorker>(
-        interval, TimeUnit.MINUTES
+        interval, TimeUnit.HOURS
     )
         .setInputData(data)
         .build()
