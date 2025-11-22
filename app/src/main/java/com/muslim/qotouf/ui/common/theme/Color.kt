@@ -10,7 +10,8 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val AppParBackgroundColor = Color(0xFF009788)
+val AppParBackgroundLight = Color(0xFF2F6E54)  // soft, lighter
+val AppParBackgroundDark  = Color(0xFF0D3A27)  // soft, darker
 
 val PageBackgroundLight = Color(0xfffaf1e4)
 val PageBackgroundDark = Color.Black
@@ -19,7 +20,8 @@ val TafsierTitleCardDark = Color(0xFF0D3F3A)
 val TafsierTitleCardLight = Color(0xFFE3F7F4)
 
 
-val SliderActiveLightColor = Color(0xFF00A99A)
-val SliderActiveDarkColor = Color(0xFF33B5AA)
+val SliderActiveLightColor = Color(0xFF1A6B48)  // lighter shade
+val SliderActiveDarkColor = Color(0xFF228F5B)   // brighter/medium shade
+
 val SliderDisActiveLightColor = Color(0xFFE0DDD8)
 val SliderDisActiveDarkColor = Color(0xFF2C2C2C)

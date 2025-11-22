@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.muslim.qotouf.R
 
 @SuppressLint("ConfigurationScreenWidthHeight")
-@Preview(showBackground = true)
 @Composable
 fun HomeCard(onclick: () -> Unit = {},cardTitle: String = "قطف جديد") {
 
@@ -50,11 +49,11 @@ fun HomeCard(onclick: () -> Unit = {},cardTitle: String = "قطف جديد") {
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF00BFA5),
-                        Color(0xFF009788),
-                        Color(0xFF00675F)
+                        Color(0xFF3A7F62), // soft light
+                        Color(0xFF2A6148), // soft base
+                        Color(0xFF1B4632)  // soft dark
                     )
-                ),
+                )
             )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

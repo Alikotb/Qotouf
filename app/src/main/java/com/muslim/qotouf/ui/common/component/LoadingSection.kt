@@ -14,10 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 
 @Composable
 fun LoadingSection() {
+    val colors = MaterialTheme.colorScheme
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -33,7 +34,7 @@ fun LoadingSection() {
             CircularProgressIndicator(
                 strokeWidth = 4.dp,
                 modifier = Modifier.size(48.dp),
-                color = AppParBackgroundColor
+                color = colors.primary
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -41,7 +42,7 @@ fun LoadingSection() {
            Text(
                 text = "جارٍ التحميل...",
                 style = MaterialTheme.typography.bodyLarge,
-                color = AppParBackgroundColor
+                color = colors.primary
             )
         }
     }

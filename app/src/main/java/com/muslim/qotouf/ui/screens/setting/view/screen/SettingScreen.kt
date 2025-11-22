@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.muslim.qotouf.MainViewModel
+import com.muslim.qotouf.MyApp
 import com.muslim.qotouf.data.model.DoaaDtoItem
 import com.muslim.qotouf.data.model.HadithDtosItem
 import com.muslim.qotouf.data.model.Verse
@@ -227,8 +228,7 @@ private fun triple(
             setNotification(
                 ctx = context,
                 title = "من صحيح البخاري",
-                message = hadithNotificationData?.text
-                    ?: "عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وآله وسلم قال: (( كل أمتي يدخلون الجنة إلا من أبى)) قالوا : يا رسول الله: ومن يأبى؟! قال: ((من أطاعني دخل الجنة، ومن عصاني فقد أبى))\n",
+                message = MyApp.allHadith.random().text,
                 notificationId = 1001,
                 channelId = AppConstant.HADITH_CHANEL_ID,
                 interval = 8L,
@@ -254,8 +254,7 @@ private fun triple(
                 setNotification(
                     ctx = context,
                     title = doaaNotificationData?.category ?: "سؤال الله الصبر",
-                    message = doaaNotificationData?.duaa?.joinToString(separator = "\n")
-                        ?: "ربنا ولا تحملنا ما لا طاقة لنا به",
+                    message = MyApp.allDoaa.random().duaa.joinToString(separator = "\n"),
                     notificationId = 1002,
                     channelId = AppConstant.DOAA_CHANEL_ID,
                     interval = 6L,

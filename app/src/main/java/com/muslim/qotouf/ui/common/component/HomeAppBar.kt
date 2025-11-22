@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -24,7 +25,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
 
 @Composable
 fun HomeAppBar(
@@ -35,12 +35,13 @@ fun HomeAppBar(
     ThirdComposableState: MutableState<@Composable (() -> Unit)?>? = null,
     onFirstIconClick: MutableState<() -> Unit>
 ) {
+    val colors = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.statusBars)
             .height(64.dp)
             .fillMaxWidth()
-            .background(AppParBackgroundColor)
+            .background(colors.primary)
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween

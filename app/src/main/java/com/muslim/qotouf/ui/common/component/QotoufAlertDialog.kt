@@ -37,7 +37,7 @@ fun QotoufAlertDialog(
                 text = title,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF009788)
+                    color = Color(0xFF134d32)
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -62,7 +62,7 @@ fun QotoufAlertDialog(
             Button(
                 onClick = onConfirm,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF009788),
+                    containerColor = Color(0xFF134d32),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(12.dp),
@@ -75,7 +75,7 @@ fun QotoufAlertDialog(
         dismissButton = {
             OutlinedButton(
                 onClick = onDismiss,
-                border = BorderStroke(1.dp, Color(0xFF009788)),
+                border = BorderStroke(1.dp, Color(0xFF134d32)),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .padding(horizontal = 4.dp)

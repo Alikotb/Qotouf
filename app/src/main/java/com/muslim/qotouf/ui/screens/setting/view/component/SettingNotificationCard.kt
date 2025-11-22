@@ -63,9 +63,9 @@ fun SettingNotificationCard(
             Box(
                 modifier = Modifier.size(36.dp)
                     .clip(CircleShape)
-                    .border(2.dp,Color(0xFF009788),CircleShape)
+                    .border(2.dp,colors.primary,CircleShape)
                     .background(
-                        if (isEnabled) Color(0xFF009788)
+                        if (isEnabled) colors.primary
                         else Color.Transparent
                     )
             ){}

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -30,7 +31,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.muslim.qotouf.ui.common.component.HomeAppBar
 import com.muslim.qotouf.ui.common.component.permission.PermissionsFlowDialog
 import com.muslim.qotouf.ui.common.navigation.AppNavHost
-import com.muslim.qotouf.ui.common.theme.AppParBackgroundColor
+import com.muslim.qotouf.ui.common.theme.AppParBackgroundDark
+import com.muslim.qotouf.ui.common.theme.AppParBackgroundLight
 import com.muslim.qotouf.ui.common.theme.QotoufTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,6 +51,7 @@ class MainActivity : ComponentActivity() {
     val notifyMessage = intent.getStringExtra("notify_message")
         enableEdgeToEdge()
         setContent {
+            val colors = MaterialTheme.colorScheme
             viewModel = hiltViewModel()
             viewModel.getDarkModeFalag()
             val isDark = viewModel.isDark.collectAsStateWithLifecycle(initialValue = false)
@@ -75,7 +78,7 @@ class MainActivity : ComponentActivity() {
 
             SideEffect {
                 systemUiController.setStatusBarColor(
-                    color = AppParBackgroundColor,
+                    color =if(isDark.value) AppParBackgroundDark else AppParBackgroundLight,
                 )
             }
             CompositionLocalProvider(

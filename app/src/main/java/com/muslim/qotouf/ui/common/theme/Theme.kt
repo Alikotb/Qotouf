@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = AppParBackgroundColor,
+    primary = AppParBackgroundDark,
     secondary = Color.White,
     surfaceContainer = PageBackgroundDark,
     onSecondary = TafsierTitleCardDark,
@@ -24,7 +24,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = AppParBackgroundColor,
+    primary = AppParBackgroundLight,
     secondary = Color.Black,
     onSecondary = TafsierTitleCardLight,
     surfaceContainer = PageBackgroundLight,
